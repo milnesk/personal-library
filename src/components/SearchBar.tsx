@@ -3,11 +3,13 @@ interface SearchBarProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
+  id?: string;
 }
 export function SearchBar({
   value,
   onChange,
-  placeholder = 'Search books...'
+  placeholder = 'Search books...',
+  id = 'book-search'
 }: SearchBarProps) {
   return <div className="relative w-full max-w-2xl mx-auto">
       <label htmlFor="book-search" className="sr-only">
