@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { X, Search, Loader2 } from 'lucide-react';
 import { Book, Tag } from '@/types/book';
 import { useTags, useAddTag } from '@/hooks/useTags';
+import { useBooks } from '@/hooks/useBooks';
 import { lookupISBN } from '@/lib/openLibrary';
 import { toast } from 'sonner';
 
