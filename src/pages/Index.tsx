@@ -117,33 +117,35 @@ export default function Index() {
   return (
     <div className="min-h-screen bg-background">
       <div className="container max-w-5xl mx-auto px-4 pb-12">
-        <Header />
+        <Header>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <div className="flex items-center gap-3">
+              <Button
+                onClick={() => { setEditingBook(null); setBookDialogOpen(true); }}
+                className="gap-2 font-heading uppercase tracking-wide font-bold text-sm"
+              >
+                <Plus className="w-4 h-4" /> Add Book
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => setTagManagerOpen(true)}
+                className="gap-2 font-heading uppercase tracking-wide font-bold text-sm bg-white/15 border-white/30 text-white hover:bg-white/25 hover:text-white"
+              >
+                <Tags className="w-4 h-4" /> Manage Tags
+              </Button>
+            </div>
+            <div className="flex-1 min-w-0 sm:max-w-sm">
+              <label htmlFor="hero-search" className="sr-only">Search books</label>
+              <SearchBar
+                id="hero-search"
+                value={filters.search}
+                onChange={(value) => setFilters((prev) => ({ ...prev, search: value }))}
+                placeholder="Search title, author, ISBN..."
+              />
+            </div>
+          </div>
+        </Header>
         <main id="main-content">
-          {/* Actions bar */}
-          <section className="flex items-center gap-3 mb-6">
-            <Button
-              onClick={() => { setEditingBook(null); setBookDialogOpen(true); }}
-              className="gap-2 font-heading uppercase tracking-wide font-bold"
-            >
-              <Plus className="w-4 h-4" /> Add Book
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => setTagManagerOpen(true)}
-              className="gap-2 font-heading uppercase tracking-wide font-bold"
-            >
-              <Tags className="w-4 h-4" /> Manage Tags
-            </Button>
-          </section>
-
-          {/* Search */}
-          <section aria-label="Search" className="mb-6">
-            <SearchBar
-              value={filters.search}
-              onChange={(value) => setFilters((prev) => ({ ...prev, search: value }))}
-              placeholder="Search by title, author, genre, ISBN, tag, or notes..."
-            />
-          </section>
 
           {/* Filters */}
           <section aria-label="Filters" className="mb-6">
