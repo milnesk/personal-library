@@ -106,6 +106,16 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
     e.preventDefault();
     if (!title.trim()) { toast.error('Title is required'); return; }
 
+    const cleanedIsbn = isbn.trim();
+    if (cleanedIsbn) {
+      const duplicate = allBooks.find(
+        (b) => b.isbn?.replace(/[-\s]/g, '') === cleanedIsbn.replace(/[-\s]/g, '') && b.id !== book?.id
+      );
+      if (duplicate) {
+        toast.error(`This ISBN is already in your library: "${duplicate.title}"`);
+        return;
+      }
+    }
     onSave({
       title: title.trim(),
       author: author.trim(),
