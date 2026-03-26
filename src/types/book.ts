@@ -2,11 +2,11 @@ export interface Book {
   id: string;
   title: string;
   author: string;
-  genre: string;
   publish_year: number | null;
   isbn: string;
   status: 'read' | 'to_be_read' | 'currently_reading';
   owned: boolean;
+  is_fiction: boolean | null;
   cover_url: string;
   notes: string;
   created_at: string;
@@ -26,7 +26,7 @@ export interface BookTag {
   tag_id: string;
 }
 
-export type SortField = 'title' | 'author' | 'genre' | 'status';
+export type SortField = 'title' | 'author' | 'status';
 export type SortDirection = 'asc' | 'desc';
 
 export interface SortConfig {
@@ -37,8 +37,8 @@ export interface SortConfig {
 export interface FilterState {
   search: string;
   authors: string[];
-  genres: string[];
   statuses: string[];
   tags: string[];
   owned: boolean | null;
+  isFiction: boolean | null;
 }

@@ -52,8 +52,8 @@ export type Database = {
           author: string
           cover_url: string | null
           created_at: string
-          genre: string
           id: string
+          is_fiction: boolean | null
           isbn: string | null
           notes: string | null
           owned: boolean
@@ -66,8 +66,8 @@ export type Database = {
           author?: string
           cover_url?: string | null
           created_at?: string
-          genre?: string
           id?: string
+          is_fiction?: boolean | null
           isbn?: string | null
           notes?: string | null
           owned?: boolean
@@ -80,8 +80,8 @@ export type Database = {
           author?: string
           cover_url?: string | null
           created_at?: string
-          genre?: string
           id?: string
+          is_fiction?: boolean | null
           isbn?: string | null
           notes?: string | null
           owned?: boolean

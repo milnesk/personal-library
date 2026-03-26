@@ -10,7 +10,6 @@ async function fetchBooks(): Promise<Book[]> {
 
   if (error) throw error;
 
-  // Fetch tags for all books
   const { data: bookTags, error: tagsError } = await supabase
     .from('book_tags')
     .select('book_id, tag_id, tags(id, name, created_at)')
@@ -18,7 +17,6 @@ async function fetchBooks(): Promise<Book[]> {
 
   if (tagsError) throw tagsError;
 
-  // Map tags to books
   const tagsByBookId = new Map<string, Tag[]>();
   for (const bt of bookTags || []) {
     if (!tagsByBookId.has(bt.book_id)) tagsByBookId.set(bt.book_id, []);
@@ -94,14 +92,8 @@ export function useDeleteBook() {
 export function getUniqueValues(books: Book[], field: keyof Book): string[] {
   const values = books
     .map((book) => book[field])
-    .filter((value): value is string => typeof value === 'string' && Boolean(value))
-    .flatMap((value) => {
-      if (field === 'genre') {
-        return value.split(';').map((v) => v.trim()).filter(Boolean);
-      }
-      return [value.trim()];
-    });
-  return [...new Set(values)].sort();
+    .filter((value): value is string => typeof value === 'string' && Boolean(value));
+  return [...new Set(values.map((v) => v.trim()))].sort();
 }
 
 export function getUniqueTags(books: Book[]): string[] {
