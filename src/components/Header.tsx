@@ -25,5 +25,3 @@ export function Header({ children }: HeaderProps) {
     </header>
   );
 }
-  );
-}
