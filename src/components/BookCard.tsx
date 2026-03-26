@@ -91,7 +91,7 @@ export function BookCard({ book, index, onEdit, onDelete }: BookCardProps) {
                 {book.publish_year && <span className="ml-1.5">({book.publish_year})</span>}
               </p>
             )}
-            {book.publish_year && <p className="text-xs text-muted-foreground mt-0.5">Published {book.publish_year}</p>}
+            
           </div>
 
           {book.notes && (
