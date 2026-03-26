@@ -5,7 +5,7 @@ export interface Book {
   genre: string;
   publish_year: number | null;
   isbn: string;
-  status: 'read' | 'to_be_read';
+  status: 'read' | 'to_be_read' | 'currently_reading';
   owned: boolean;
   cover_url: string;
   notes: string;

@@ -32,7 +32,7 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
   const [genre, setGenre] = useState('');
   const [publishYear, setPublishYear] = useState('');
   const [isbn, setIsbn] = useState('');
-  const [status, setStatus] = useState<'read' | 'to_be_read'>('to_be_read');
+  const [status, setStatus] = useState<'read' | 'to_be_read' | 'currently_reading'>('to_be_read');
   const [owned, setOwned] = useState(false);
   const [notes, setNotes] = useState('');
   const [coverUrl, setCoverUrl] = useState('');
@@ -229,10 +229,11 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
           <div className="grid grid-cols-2 gap-4">
             <div>
               <Label>Status</Label>
-              <Select value={status} onValueChange={(v) => setStatus(v as 'read' | 'to_be_read')}>
+              <Select value={status} onValueChange={(v) => setStatus(v as 'read' | 'to_be_read' | 'currently_reading')}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="read">Read</SelectItem>
+                  <SelectItem value="currently_reading">Currently Reading</SelectItem>
                   <SelectItem value="to_be_read">To Be Read</SelectItem>
                 </SelectContent>
               </Select>

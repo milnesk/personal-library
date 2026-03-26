@@ -1,4 +1,4 @@
-import { Pencil, Trash2, BookOpen, BookMarked } from 'lucide-react';
+import { Pencil, Trash2, BookOpen, BookMarked, BookOpenCheck } from 'lucide-react';
 import { Book } from '@/types/book';
 import { Button } from '@/components/ui/button';
 
@@ -64,11 +64,17 @@ export function BookCard({ book, index, onEdit, onDelete }: BookCardProps) {
               <h2 className="font-heading text-lg font-bold text-foreground leading-tight uppercase tracking-wide">
                 {book.title}
               </h2>
-              {book.status === 'read' ? (
+              {book.status === 'read' && (
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest bg-comic-olive/15 text-comic-olive">
                   <BookOpen className="w-3 h-3" /> Read
                 </span>
-              ) : (
+              )}
+              {book.status === 'currently_reading' && (
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest bg-comic-blue/15 text-comic-blue">
+                  <BookOpenCheck className="w-3 h-3" /> Reading
+                </span>
+              )}
+              {book.status === 'to_be_read' && (
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest bg-comic-amber/15 text-comic-amber">
                   <BookMarked className="w-3 h-3" /> TBR
                 </span>
@@ -85,7 +91,7 @@ export function BookCard({ book, index, onEdit, onDelete }: BookCardProps) {
                 {book.publish_year && <span className="ml-1.5">({book.publish_year})</span>}
               </p>
             )}
-            {book.isbn && <p className="text-xs text-muted-foreground mt-0.5 font-mono opacity-60">ISBN {book.isbn}</p>}
+            {book.publish_year && <p className="text-xs text-muted-foreground mt-0.5">Published {book.publish_year}</p>}
           </div>
 
           {book.notes && (
