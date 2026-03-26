@@ -166,10 +166,11 @@ export default function Index() {
               />
               <FilterDropdown
                 label="Status"
-                options={['read', 'to_be_read']}
+                options={['read', 'currently_reading', 'to_be_read']}
                 selectedValues={filters.statuses}
                 onChange={(values) => setFilters((prev) => ({ ...prev, statuses: values }))}
                 colorClass="bg-sage text-sage-foreground"
+                formatLabel={(v) => v.replace(/_/g, ' ')}
               />
               {uniqueTags.length > 0 && (
                 <FilterDropdown

@@ -7,6 +7,7 @@ interface FilterDropdownProps {
   selectedValues: string[];
   onChange: (values: string[]) => void;
   colorClass?: string;
+  formatLabel?: (value: string) => string;
 }
 
 export function FilterDropdown({ 
@@ -14,7 +15,8 @@ export function FilterDropdown({
   options, 
   selectedValues, 
   onChange,
-  colorClass = 'bg-secondary text-secondary-foreground'
+  colorClass = 'bg-secondary text-secondary-foreground',
+  formatLabel,
 }: FilterDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState(-1);
@@ -183,7 +185,7 @@ export function FilterDropdown({
                     >
                       {isSelected && <Check className="w-3 h-3 text-primary-foreground" />}
                     </span>
-                    <span className="flex-1 truncate">{option || '(No value)'}</span>
+                    <span className="flex-1 truncate capitalize">{formatLabel ? formatLabel(option) : (option || '(No value)')}</span>
                   </button>
                 );
               })
