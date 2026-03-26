@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { X, Search, Loader2 } from 'lucide-react';
 import { Book, Tag } from '@/types/book';
 import { useTags, useAddTag } from '@/hooks/useTags';
+import { useBooks } from '@/hooks/useBooks';
 import { lookupISBN } from '@/lib/openLibrary';
 import { toast } from 'sonner';
 
@@ -23,6 +24,7 @@ interface BookFormDialogProps {
 
 export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: BookFormDialogProps) {
   const { data: allTags = [] } = useTags();
+  const { data: allBooks = [] } = useBooks();
   const addTag = useAddTag();
 
   const [title, setTitle] = useState('');
@@ -104,6 +106,16 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
     e.preventDefault();
     if (!title.trim()) { toast.error('Title is required'); return; }
 
+    const cleanedIsbn = isbn.trim();
+    if (cleanedIsbn) {
+      const duplicate = allBooks.find(
+        (b) => b.isbn?.replace(/[-\s]/g, '') === cleanedIsbn.replace(/[-\s]/g, '') && b.id !== book?.id
+      );
+      if (duplicate) {
+        toast.error(`This ISBN is already in your library: "${duplicate.title}"`);
+        return;
+      }
+    }
     onSave({
       title: title.trim(),
       author: author.trim(),
