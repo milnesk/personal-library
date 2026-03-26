@@ -37,6 +37,8 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
   const [newTagName, setNewTagName] = useState('');
   const [isLooking, setIsLooking] = useState(false);
+  const [availableSubjects, setAvailableSubjects] = useState<string[]>([]);
+  const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
 
   useEffect(() => {
     if (book) {
@@ -50,10 +52,13 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
       setNotes(book.notes);
       setCoverUrl(book.cover_url || '');
       setSelectedTagIds(book.tags?.map((t) => t.id) || []);
+      setAvailableSubjects([]);
+      setSelectedSubjects(book.genre ? book.genre.split(';').map((g) => g.trim()).filter(Boolean) : []);
     } else {
       setTitle(''); setAuthor(''); setGenre(''); setPublishYear('');
       setIsbn(''); setStatus('to_be_read'); setOwned(false); setNotes('');
       setCoverUrl(''); setSelectedTagIds([]);
+      setAvailableSubjects([]); setSelectedSubjects([]);
     }
   }, [book, open]);
 
@@ -66,15 +71,33 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
       const result = await lookupISBN(cleanISBN);
       setTitle(result.title || title);
       setAuthor(result.author || author);
-      setGenre(result.genre || genre);
       if (result.publish_year) setPublishYear(result.publish_year.toString());
       if (result.cover_url) setCoverUrl(result.cover_url);
-      toast.success('Book details found! Review and edit as needed.');
+      setAvailableSubjects(result.subjects);
+      setSelectedSubjects([]);
+      setGenre('');
+      toast.success('Book details found! Select genres from the subjects below.');
     } catch {
       toast.error('Could not find book. Check the ISBN and try again.');
     } finally {
       setIsLooking(false);
     }
+  };
+
+  const toggleSubject = (subject: string) => {
+    setSelectedSubjects((prev) => {
+      let next: string[];
+      if (prev.includes(subject)) {
+        next = prev.filter((s) => s !== subject);
+      } else if (prev.length >= 5) {
+        toast.error('Maximum 5 genres allowed');
+        return prev;
+      } else {
+        next = [...prev, subject];
+      }
+      setGenre(next.join('; '));
+      return next;
+    });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
