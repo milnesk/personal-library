@@ -6,70 +6,70 @@
 
 @layer base {
   :root {
-    /* Comic Panel Palette — inspired by Super Visible */
-    --background: 0 0% 97%;
-    --foreground: 220 20% 12%;
+    /* Comic Panel Palette — contemporary edition */
+    --background: 220 8% 96%;
+    --foreground: 220 15% 20%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 20% 12%;
+    --card-foreground: 220 15% 20%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 12%;
+    --popover-foreground: 220 15% 20%;
 
     /* Royal Blue primary */
-    --primary: 228 80% 52%;
+    --primary: 228 72% 55%;
     --primary-foreground: 0 0% 100%;
 
     /* Coral Red secondary */
-    --secondary: 2 72% 62%;
+    --secondary: 4 68% 60%;
     --secondary-foreground: 0 0% 100%;
 
-    /* Light gray muted */
+    /* Soft muted */
     --muted: 220 10% 92%;
-    --muted-foreground: 220 10% 42%;
+    --muted-foreground: 220 10% 45%;
 
     /* Olive Green accent */
-    --accent: 68 40% 40%;
+    --accent: 68 35% 42%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 72% 50%;
+    --destructive: 0 65% 52%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 12% 82%;
-    --input: 220 12% 82%;
-    --ring: 228 80% 52%;
+    --border: 220 10% 75%;
+    --input: 220 10% 80%;
+    --ring: 228 72% 55%;
 
-    --radius: 0.25rem;
+    --radius: 0.5rem;
 
     /* Comic accent colors */
-    --comic-blue: 228 80% 52%;
+    --comic-blue: 228 72% 55%;
     --comic-blue-foreground: 0 0% 100%;
-    --comic-red: 2 72% 62%;
+    --comic-red: 4 68% 60%;
     --comic-red-foreground: 0 0% 100%;
-    --comic-olive: 68 40% 40%;
+    --comic-olive: 68 35% 42%;
     --comic-olive-foreground: 0 0% 100%;
-    --comic-amber: 36 85% 58%;
-    --comic-amber-foreground: 220 20% 12%;
-    --comic-white: 0 0% 100%;
+    --comic-amber: 36 80% 58%;
+    --comic-amber-foreground: 220 15% 15%;
+    --comic-dark: 220 15% 25%;
 
     /* Typography */
     --font-display: 'Bangers', 'Impact', sans-serif;
     --font-heading: 'Barlow Condensed', 'Impact', sans-serif;
     --font-body: 'Barlow', 'Helvetica Neue', sans-serif;
 
-    /* Shadows — bold, graphic */
-    --shadow-panel: 3px 3px 0px hsl(220 20% 12% / 0.9);
-    --shadow-card: 4px 4px 0px hsl(220 20% 12% / 0.15);
-    --shadow-hover: 6px 6px 0px hsl(228 80% 52% / 0.3);
+    /* Shadows — modern, softer */
+    --shadow-card: 0 1px 3px hsl(220 15% 20% / 0.08), 0 4px 12px hsl(220 15% 20% / 0.06);
+    --shadow-hover: 0 4px 16px hsl(228 72% 55% / 0.15), 0 2px 6px hsl(220 15% 20% / 0.08);
+    --shadow-panel: 2px 2px 0px hsl(220 15% 25% / 0.6);
 
-    --sidebar-background: 0 0% 97%;
-    --sidebar-foreground: 220 20% 12%;
-    --sidebar-primary: 228 80% 52%;
+    --sidebar-background: 220 8% 96%;
+    --sidebar-foreground: 220 15% 20%;
+    --sidebar-primary: 228 72% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 68 40% 85%;
-    --sidebar-accent-foreground: 68 40% 20%;
-    --sidebar-border: 220 12% 82%;
-    --sidebar-ring: 228 80% 52%;
+    --sidebar-accent: 68 35% 88%;
+    --sidebar-accent-foreground: 68 35% 22%;
+    --sidebar-border: 220 10% 80%;
+    --sidebar-ring: 228 72% 55%;
   }
 }
 
@@ -85,23 +85,22 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
-    letter-spacing: 0.02em;
+    letter-spacing: 0.01em;
   }
 }
 
 @layer components {
   .search-input {
-    @apply w-full px-5 py-3.5 border-2 border-foreground bg-card text-foreground placeholder:text-muted-foreground transition-all duration-200;
+    @apply w-full px-5 py-3.5 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground transition-all duration-200;
     font-family: var(--font-body);
   }
 
   .search-input:focus {
-    @apply outline-none border-primary;
-    box-shadow: var(--shadow-panel);
+    @apply outline-none border-primary ring-2 ring-primary/20;
   }
 
   .filter-pill {
-    @apply inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold transition-all duration-150 cursor-pointer select-none border-2 border-foreground;
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-semibold transition-all duration-150 cursor-pointer select-none border border-border;
   }
 
   .filter-pill-inactive {
@@ -109,40 +108,34 @@
   }
 
   .filter-pill-active {
-    @apply bg-primary text-primary-foreground;
-    box-shadow: var(--shadow-panel);
+    @apply bg-primary text-primary-foreground border-primary;
   }
 
   .book-card {
-    @apply bg-card border-3 border-foreground p-0 transition-all duration-200 overflow-hidden;
-    border-width: 3px;
+    @apply bg-card rounded-lg overflow-hidden transition-all duration-200;
+    border-left: 4px solid transparent;
+    box-shadow: var(--shadow-card);
   }
 
   .book-card:hover {
     box-shadow: var(--shadow-hover);
-    transform: translate(-2px, -2px);
-  }
-
-  .comic-panel {
-    @apply border-3 border-foreground;
-    border-width: 3px;
+    transform: translateY(-2px);
   }
 
   .genre-tag {
-    @apply inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider border-2 border-foreground;
+    @apply inline-block px-2.5 py-0.5 rounded text-xs font-semibold uppercase tracking-wide;
   }
 
   .sort-button {
-    @apply inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold transition-all duration-150 border-2 border-foreground;
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-semibold transition-all duration-150;
   }
 
   .sort-button-inactive {
-    @apply bg-card text-foreground hover:bg-muted;
+    @apply text-muted-foreground hover:text-foreground hover:bg-muted;
   }
 
   .sort-button-active {
     @apply bg-primary text-primary-foreground;
-    box-shadow: 2px 2px 0px hsl(220 20% 12% / 0.9);
   }
 }
 
@@ -177,11 +170,5 @@
 
   .focus-ring {
     @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
-  }
-
-  .halftone {
-    background-image: radial-gradient(circle, currentColor 1px, transparent 1px);
-    background-size: 4px 4px;
-    opacity: 0.06;
   }
 }

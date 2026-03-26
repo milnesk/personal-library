@@ -123,14 +123,14 @@ export default function Index() {
           <section className="flex items-center gap-3 mb-6">
             <Button
               onClick={() => { setEditingBook(null); setBookDialogOpen(true); }}
-              className="gap-2 font-heading uppercase tracking-wide font-bold border-2 border-foreground shadow-panel"
+              className="gap-2 font-heading uppercase tracking-wide font-bold"
             >
               <Plus className="w-4 h-4" /> Add Book
             </Button>
             <Button
               variant="outline"
               onClick={() => setTagManagerOpen(true)}
-              className="gap-2 font-heading uppercase tracking-wide font-bold border-2 border-foreground"
+              className="gap-2 font-heading uppercase tracking-wide font-bold"
             >
               <Tags className="w-4 h-4" /> Manage Tags
             </Button>
