@@ -37,6 +37,8 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
   const [newTagName, setNewTagName] = useState('');
   const [isLooking, setIsLooking] = useState(false);
+  const [availableSubjects, setAvailableSubjects] = useState<string[]>([]);
+  const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
 
   useEffect(() => {
     if (book) {
@@ -50,10 +52,13 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
       setNotes(book.notes);
       setCoverUrl(book.cover_url || '');
       setSelectedTagIds(book.tags?.map((t) => t.id) || []);
+      setAvailableSubjects([]);
+      setSelectedSubjects(book.genre ? book.genre.split(';').map((g) => g.trim()).filter(Boolean) : []);
     } else {
       setTitle(''); setAuthor(''); setGenre(''); setPublishYear('');
       setIsbn(''); setStatus('to_be_read'); setOwned(false); setNotes('');
       setCoverUrl(''); setSelectedTagIds([]);
+      setAvailableSubjects([]); setSelectedSubjects([]);
     }
   }, [book, open]);
 
@@ -66,15 +71,33 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
       const result = await lookupISBN(cleanISBN);
       setTitle(result.title || title);
       setAuthor(result.author || author);
-      setGenre(result.genre || genre);
       if (result.publish_year) setPublishYear(result.publish_year.toString());
       if (result.cover_url) setCoverUrl(result.cover_url);
-      toast.success('Book details found! Review and edit as needed.');
+      setAvailableSubjects(result.subjects);
+      setSelectedSubjects([]);
+      setGenre('');
+      toast.success('Book details found! Select genres from the subjects below.');
     } catch {
       toast.error('Could not find book. Check the ISBN and try again.');
     } finally {
       setIsLooking(false);
     }
+  };
+
+  const toggleSubject = (subject: string) => {
+    setSelectedSubjects((prev) => {
+      let next: string[];
+      if (prev.includes(subject)) {
+        next = prev.filter((s) => s !== subject);
+      } else if (prev.length >= 5) {
+        toast.error('Maximum 5 genres allowed');
+        return prev;
+      } else {
+        next = [...prev, subject];
+      }
+      setGenre(next.join('; '));
+      return next;
+    });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -161,15 +184,35 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
             <Label htmlFor="author">Author</Label>
             <Input id="author" value={author} onChange={(e) => setAuthor(e.target.value)} />
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="genre">Genre</Label>
+          {/* Genre / Subject picker */}
+          <div>
+            <Label htmlFor="genre">Genre</Label>
+            {availableSubjects.length > 0 ? (
+              <div className="mt-1">
+                <p className="text-xs text-muted-foreground mb-2">
+                  Select up to 5 ({selectedSubjects.length}/5):
+                </p>
+                <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto p-2 rounded-lg border border-input bg-background">
+                  {availableSubjects.map((subject) => (
+                    <Badge
+                      key={subject}
+                      variant={selectedSubjects.includes(subject) ? 'default' : 'outline'}
+                      className="cursor-pointer text-xs"
+                      onClick={() => toggleSubject(subject)}
+                    >
+                      {subject}
+                      {selectedSubjects.includes(subject) && <X className="w-3 h-3 ml-1" />}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            ) : (
               <Input id="genre" value={genre} onChange={(e) => setGenre(e.target.value)} placeholder="Fiction; Mystery" />
-            </div>
-            <div>
-              <Label htmlFor="publishYear">Publish Year</Label>
-              <Input id="publishYear" type="number" value={publishYear} onChange={(e) => setPublishYear(e.target.value)} placeholder="2024" />
-            </div>
+            )}
+          </div>
+          <div>
+            <Label htmlFor="publishYear">Publish Year</Label>
+            <Input id="publishYear" type="number" value={publishYear} onChange={(e) => setPublishYear(e.target.value)} placeholder="2024" />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
