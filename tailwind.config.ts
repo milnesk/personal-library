@@ -52,7 +52,6 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Comic panel colors
         "comic-blue": {
           DEFAULT: "hsl(var(--comic-blue))",
           foreground: "hsl(var(--comic-blue-foreground))",
@@ -84,9 +83,6 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
-      },
-      borderWidth: {
-        '3': '3px',
       },
       boxShadow: {
         panel: "var(--shadow-panel)",
