@@ -7,9 +7,10 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
-import { X } from 'lucide-react';
+import { X, Search, Loader2 } from 'lucide-react';
 import { Book, Tag } from '@/types/book';
 import { useTags, useAddTag } from '@/hooks/useTags';
+import { lookupISBN } from '@/lib/openLibrary';
 import { toast } from 'sonner';
 
 interface BookFormDialogProps {
@@ -32,8 +33,10 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
   const [status, setStatus] = useState<'read' | 'to_be_read'>('to_be_read');
   const [owned, setOwned] = useState(false);
   const [notes, setNotes] = useState('');
+  const [coverUrl, setCoverUrl] = useState('');
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
   const [newTagName, setNewTagName] = useState('');
+  const [isLooking, setIsLooking] = useState(false);
 
   useEffect(() => {
     if (book) {
@@ -45,13 +48,34 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
       setStatus(book.status);
       setOwned(book.owned);
       setNotes(book.notes);
+      setCoverUrl(book.cover_url || '');
       setSelectedTagIds(book.tags?.map((t) => t.id) || []);
     } else {
       setTitle(''); setAuthor(''); setGenre(''); setPublishYear('');
       setIsbn(''); setStatus('to_be_read'); setOwned(false); setNotes('');
-      setSelectedTagIds([]);
+      setCoverUrl(''); setSelectedTagIds([]);
     }
   }, [book, open]);
+
+  const handleLookup = async () => {
+    const cleanISBN = isbn.replace(/[-\s]/g, '');
+    if (!cleanISBN) { toast.error('Enter an ISBN first'); return; }
+
+    setIsLooking(true);
+    try {
+      const result = await lookupISBN(cleanISBN);
+      setTitle(result.title || title);
+      setAuthor(result.author || author);
+      setGenre(result.genre || genre);
+      if (result.publish_year) setPublishYear(result.publish_year.toString());
+      if (result.cover_url) setCoverUrl(result.cover_url);
+      toast.success('Book details found! Review and edit as needed.');
+    } catch {
+      toast.error('Could not find book. Check the ISBN and try again.');
+    } finally {
+      setIsLooking(false);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,7 +90,7 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
       status,
       owned,
       notes: notes.trim(),
-      cover_url: book?.cover_url || '',
+      cover_url: coverUrl,
       tagIds: selectedTagIds,
       ...(book ? { id: book.id } : {}),
     });
@@ -96,6 +120,39 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
           <DialogTitle className="font-display">{book ? 'Edit Book' : 'Add Book'}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* ISBN with Lookup */}
+          <div>
+            <Label htmlFor="isbn">ISBN</Label>
+            <div className="flex gap-2">
+              <Input
+                id="isbn"
+                value={isbn}
+                onChange={(e) => setIsbn(e.target.value)}
+                placeholder="e.g. 978-0451524935"
+                className="flex-1"
+                onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleLookup(); } }}
+              />
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={handleLookup}
+                disabled={isLooking || !isbn.trim()}
+                className="gap-1.5 shrink-0"
+              >
+                {isLooking ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
+                Lookup
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground mt-1">Enter ISBN and click Lookup to auto-fill details</p>
+          </div>
+
+          {/* Cover preview */}
+          {coverUrl && (
+            <div className="flex justify-center">
+              <img src={coverUrl} alt="Book cover" className="h-32 rounded-md shadow-card object-contain" />
+            </div>
+          )}
+
           <div>
             <Label htmlFor="title">Title *</Label>
             <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} required />
@@ -113,10 +170,6 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
               <Label htmlFor="publishYear">Publish Year</Label>
               <Input id="publishYear" type="number" value={publishYear} onChange={(e) => setPublishYear(e.target.value)} placeholder="2024" />
             </div>
-          </div>
-          <div>
-            <Label htmlFor="isbn">ISBN</Label>
-            <Input id="isbn" value={isbn} onChange={(e) => setIsbn(e.target.value)} />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
