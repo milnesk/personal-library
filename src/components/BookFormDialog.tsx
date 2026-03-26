@@ -24,6 +24,7 @@ interface BookFormDialogProps {
 
 export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: BookFormDialogProps) {
   const { data: allTags = [] } = useTags();
+  const { data: allBooks = [] } = useBooks();
   const addTag = useAddTag();
 
   const [title, setTitle] = useState('');
