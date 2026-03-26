@@ -1,16 +1,29 @@
-import heroImage from '@/assets/grandma-books-header.png';
+import heroImage from '@/assets/hero-comic.jpg';
+
 export function Header() {
-  return <header style={{
-    backgroundImage: `url(${heroImage})`
-  }} className="relative py-16 sm:py-20 md:py-24 text-center bg-cover bg-center rounded-3xl">
-      <div aria-hidden="true" className="absolute inset-0 bg-cream/70 border-4 px-0 border-double rounded-3xl" />
-      <div className="relative z-10">
-        <h1 className="text-3xl sm:text-4xl text-foreground mb-3 drop-shadow-sm font-serif font-semibold md:text-5xl">
-          Grandma Joan's Book Reviews
-        </h1>
-        <p className="text-base sm:text-lg max-w-lg mx-auto px-4 text-secondary-foreground">
-          Discover treasured reads from a lifetime of stories. Search, filter, and explore her curated collection.
-        </p>
+  return (
+    <header className="relative mb-8 mt-4 overflow-hidden border-3 border-foreground" style={{ borderWidth: '3px' }}>
+      {/* Comic panel grid hero */}
+      <div className="relative">
+        <img
+          src={heroImage}
+          alt=""
+          className="w-full h-48 sm:h-56 md:h-64 object-cover"
+          width={1920}
+          height={600}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-foreground/80 via-foreground/50 to-transparent" />
+        <div className="absolute inset-0 flex items-center px-6 sm:px-10">
+          <div>
+            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl text-white tracking-wider drop-shadow-lg leading-none">
+              MY LIBRARY
+            </h1>
+            <p className="font-heading text-lg sm:text-xl text-white/90 mt-2 font-semibold uppercase tracking-wide">
+              Personal Book Collection Manager
+            </p>
+          </div>
+        </div>
       </div>
-    </header>;
+    </header>
+  );
 }

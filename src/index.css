@@ -2,77 +2,74 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Lora:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap');
 
 @layer base {
   :root {
-    /* Grandma's Wallpaper-Inspired Palette */
-    /* Warm cream background from the wallpaper */
-    --background: 40 30% 95%;
-    --foreground: 35 35% 18%;
+    /* Comic Panel Palette — inspired by Super Visible */
+    --background: 0 0% 97%;
+    --foreground: 220 20% 12%;
 
-    --card: 40 35% 98%;
-    --card-foreground: 35 35% 18%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 12%;
 
-    --popover: 40 35% 98%;
-    --popover-foreground: 35 35% 18%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 12%;
 
-    /* Mustard gold primary - from the teapot motif */
-    --primary: 42 55% 48%;
-    --primary-foreground: 40 30% 98%;
+    /* Royal Blue primary */
+    --primary: 228 80% 52%;
+    --primary-foreground: 0 0% 100%;
 
-    /* Sage green secondary */
-    --secondary: 100 25% 78%;
-    --secondary-foreground: 100 30% 25%;
+    /* Coral Red secondary */
+    --secondary: 2 72% 62%;
+    --secondary-foreground: 0 0% 100%;
 
-    /* Warm beige muted */
-    --muted: 38 25% 90%;
-    --muted-foreground: 35 20% 45%;
+    /* Light gray muted */
+    --muted: 220 10% 92%;
+    --muted-foreground: 220 10% 42%;
 
-    /* Olive accent */
-    --accent: 75 25% 45%;
-    --accent-foreground: 40 30% 98%;
+    /* Olive Green accent */
+    --accent: 68 40% 40%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 65% 50%;
+    --destructive: 0 72% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 38 20% 85%;
-    --input: 38 20% 85%;
-    --ring: 42 55% 48%;
+    --border: 220 12% 82%;
+    --input: 220 12% 82%;
+    --ring: 228 80% 52%;
 
-    --radius: 1rem;
+    --radius: 0.25rem;
 
-    /* Wallpaper-inspired accent colors */
-    --sage: 100 25% 72%;
-    --sage-foreground: 100 35% 22%;
-    --mustard: 42 60% 55%;
-    --mustard-foreground: 42 70% 15%;
-    --cream: 40 40% 92%;
-    --cream-foreground: 35 35% 20%;
-    --olive: 75 30% 38%;
-    --olive-foreground: 40 30% 98%;
-    --forest: 85 35% 25%;
-    --forest-foreground: 40 30% 95%;
-    --warm-brown: 30 35% 45%;
-    --warm-brown-foreground: 40 30% 98%;
+    /* Comic accent colors */
+    --comic-blue: 228 80% 52%;
+    --comic-blue-foreground: 0 0% 100%;
+    --comic-red: 2 72% 62%;
+    --comic-red-foreground: 0 0% 100%;
+    --comic-olive: 68 40% 40%;
+    --comic-olive-foreground: 0 0% 100%;
+    --comic-amber: 36 85% 58%;
+    --comic-amber-foreground: 220 20% 12%;
+    --comic-white: 0 0% 100%;
 
     /* Typography */
-    --font-display: 'Playfair Display', Georgia, serif;
-    --font-body: 'Lora', Georgia, serif;
+    --font-display: 'Bangers', 'Impact', sans-serif;
+    --font-heading: 'Barlow Condensed', 'Impact', sans-serif;
+    --font-body: 'Barlow', 'Helvetica Neue', sans-serif;
 
-    /* Shadows - warmer tones */
-    --shadow-soft: 0 4px 20px -4px hsl(35 30% 20% / 0.08);
-    --shadow-card: 0 8px 30px -8px hsl(35 30% 20% / 0.1);
-    --shadow-hover: 0 12px 40px -10px hsl(42 55% 48% / 0.2);
+    /* Shadows — bold, graphic */
+    --shadow-panel: 3px 3px 0px hsl(220 20% 12% / 0.9);
+    --shadow-card: 4px 4px 0px hsl(220 20% 12% / 0.15);
+    --shadow-hover: 6px 6px 0px hsl(228 80% 52% / 0.3);
 
-    --sidebar-background: 40 30% 96%;
-    --sidebar-foreground: 35 35% 25%;
-    --sidebar-primary: 42 55% 48%;
-    --sidebar-primary-foreground: 40 30% 98%;
-    --sidebar-accent: 100 25% 88%;
-    --sidebar-accent-foreground: 100 30% 25%;
-    --sidebar-border: 38 20% 85%;
-    --sidebar-ring: 42 55% 48%;
+    --sidebar-background: 0 0% 97%;
+    --sidebar-foreground: 220 20% 12%;
+    --sidebar-primary: 228 80% 52%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 68 40% 85%;
+    --sidebar-accent-foreground: 68 40% 20%;
+    --sidebar-border: 220 12% 82%;
+    --sidebar-ring: 228 80% 52%;
   }
 }
 
@@ -87,64 +84,76 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-display);
+    font-family: var(--font-heading);
+    letter-spacing: 0.02em;
   }
 }
 
 @layer components {
   .search-input {
-    @apply w-full px-5 py-4 rounded-full border-2 border-transparent bg-card text-foreground placeholder:text-muted-foreground transition-all duration-300;
-    box-shadow: var(--shadow-soft);
+    @apply w-full px-5 py-3.5 border-2 border-foreground bg-card text-foreground placeholder:text-muted-foreground transition-all duration-200;
+    font-family: var(--font-body);
   }
 
   .search-input:focus {
     @apply outline-none border-primary;
-    box-shadow: var(--shadow-hover);
+    box-shadow: var(--shadow-panel);
   }
 
   .filter-pill {
-    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer select-none;
+    @apply inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold transition-all duration-150 cursor-pointer select-none border-2 border-foreground;
   }
 
   .filter-pill-inactive {
-    @apply bg-muted text-muted-foreground hover:bg-secondary hover:text-secondary-foreground;
+    @apply bg-card text-foreground hover:bg-muted;
   }
 
   .filter-pill-active {
     @apply bg-primary text-primary-foreground;
+    box-shadow: var(--shadow-panel);
   }
 
   .book-card {
-    @apply bg-card rounded-2xl p-5 transition-all duration-300 border border-border/50;
-    box-shadow: var(--shadow-card);
+    @apply bg-card border-3 border-foreground p-0 transition-all duration-200 overflow-hidden;
+    border-width: 3px;
   }
 
   .book-card:hover {
-    transform: translateY(-4px);
     box-shadow: var(--shadow-hover);
-    @apply border-primary/30;
+    transform: translate(-2px, -2px);
+  }
+
+  .comic-panel {
+    @apply border-3 border-foreground;
+    border-width: 3px;
   }
 
   .genre-tag {
-    @apply inline-block px-3 py-1 rounded-full text-xs font-semibold;
+    @apply inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider border-2 border-foreground;
   }
 
   .sort-button {
-    @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors;
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold transition-all duration-150 border-2 border-foreground;
   }
 
   .sort-button-inactive {
-    @apply text-muted-foreground hover:text-foreground hover:bg-muted;
+    @apply bg-card text-foreground hover:bg-muted;
   }
 
   .sort-button-active {
     @apply bg-primary text-primary-foreground;
+    box-shadow: 2px 2px 0px hsl(220 20% 12% / 0.9);
   }
 }
 
 @layer utilities {
   .font-display {
     font-family: var(--font-display);
+    letter-spacing: 0.04em;
+  }
+
+  .font-heading {
+    font-family: var(--font-heading);
   }
 
   .font-body {
@@ -152,13 +161,13 @@
   }
 
   .animate-fade-in {
-    animation: fadeIn 0.3s ease-out;
+    animation: fadeIn 0.25s ease-out;
   }
 
   @keyframes fadeIn {
     from {
       opacity: 0;
-      transform: translateY(8px);
+      transform: translateY(4px);
     }
     to {
       opacity: 1;
@@ -168,5 +177,11 @@
 
   .focus-ring {
     @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  }
+
+  .halftone {
+    background-image: radial-gradient(circle, currentColor 1px, transparent 1px);
+    background-size: 4px 4px;
+    opacity: 0.06;
   }
 }
