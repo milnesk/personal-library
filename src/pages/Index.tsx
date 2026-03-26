@@ -116,15 +116,22 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container max-w-4xl mx-auto px-4 pb-12">
+      <div className="container max-w-5xl mx-auto px-4 pb-12">
         <Header />
         <main id="main-content">
           {/* Actions bar */}
           <section className="flex items-center gap-3 mb-6">
-            <Button onClick={() => { setEditingBook(null); setBookDialogOpen(true); }} className="gap-2">
+            <Button
+              onClick={() => { setEditingBook(null); setBookDialogOpen(true); }}
+              className="gap-2 font-heading uppercase tracking-wide font-bold border-2 border-foreground shadow-panel"
+            >
               <Plus className="w-4 h-4" /> Add Book
             </Button>
-            <Button variant="outline" onClick={() => setTagManagerOpen(true)} className="gap-2">
+            <Button
+              variant="outline"
+              onClick={() => setTagManagerOpen(true)}
+              className="gap-2 font-heading uppercase tracking-wide font-bold border-2 border-foreground"
+            >
               <Tags className="w-4 h-4" /> Manage Tags
             </Button>
           </section>
