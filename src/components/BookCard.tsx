@@ -59,51 +59,41 @@ export function BookCard({ book, index, onEdit, onDelete }: BookCardProps) {
 
         {/* Content */}
         <div className="flex-1 p-4 sm:p-5 min-w-0">
-          <div className="flex justify-between items-start gap-3">
-            <div className="min-w-0">
-              <div className="flex items-center gap-2 flex-wrap">
-                <h2 className="font-heading text-lg font-bold text-foreground leading-tight uppercase tracking-wide">
-                  {book.title}
-                </h2>
-                {book.status === 'read' ? (
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest bg-comic-olive/15 text-comic-olive">
-                    <BookOpen className="w-3 h-3" /> Read
-                  </span>
-                ) : (
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest bg-comic-amber/15 text-comic-amber">
-                    <BookMarked className="w-3 h-3" /> TBR
-                  </span>
-                )}
-                {book.owned && (
-                  <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest bg-comic-blue/15 text-comic-blue">
-                    Owned
-                  </span>
-                )}
-              </div>
-              {book.author && (
-                <p className="text-sm text-muted-foreground mt-1">
-                  by <span className="text-foreground font-semibold">{book.author}</span>
-                  {book.publish_year && <span className="ml-1.5">({book.publish_year})</span>}
-                </p>
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h2 className="font-heading text-lg font-bold text-foreground leading-tight uppercase tracking-wide">
+                {book.title}
+              </h2>
+              {book.status === 'read' ? (
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest bg-comic-olive/15 text-comic-olive">
+                  <BookOpen className="w-3 h-3" /> Read
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest bg-comic-amber/15 text-comic-amber">
+                  <BookMarked className="w-3 h-3" /> TBR
+                </span>
               )}
-              {book.isbn && <p className="text-xs text-muted-foreground mt-0.5 font-mono opacity-60">ISBN {book.isbn}</p>}
+              {book.owned && (
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest bg-comic-blue/15 text-comic-blue">
+                  Owned
+                </span>
+              )}
             </div>
-            <div className="flex gap-0.5 shrink-0">
-              <Button size="icon" variant="ghost" className="h-8 w-8 rounded-md hover:bg-comic-blue/10" onClick={() => onEdit(book)}>
-                <Pencil className="w-3.5 h-3.5" />
-              </Button>
-              <Button size="icon" variant="ghost" className="h-8 w-8 rounded-md hover:bg-destructive/10 text-destructive" onClick={() => onDelete(book.id)}>
-                <Trash2 className="w-3.5 h-3.5" />
-              </Button>
-            </div>
+            {book.author && (
+              <p className="text-sm text-muted-foreground mt-1">
+                by <span className="text-foreground font-semibold">{book.author}</span>
+                {book.publish_year && <span className="ml-1.5">({book.publish_year})</span>}
+              </p>
+            )}
+            {book.isbn && <p className="text-xs text-muted-foreground mt-0.5 font-mono opacity-60">ISBN {book.isbn}</p>}
           </div>
 
           {book.notes && (
             <p className="text-sm text-muted-foreground mt-2.5 leading-relaxed">{book.notes}</p>
           )}
 
-          {(genres.length > 0 || (book.tags && book.tags.length > 0)) && (
-            <div className="flex flex-wrap gap-1.5 mt-3">
+          <div className="flex items-end justify-between gap-2 mt-3">
+            <div className="flex flex-wrap gap-1.5 min-w-0">
               {genres.map((g, i) => (
                 <span key={i} className={`genre-tag ${getGenreColor(g)}`}>{g}</span>
               ))}
@@ -111,7 +101,15 @@ export function BookCard({ book, index, onEdit, onDelete }: BookCardProps) {
                 <span key={tag.id} className="genre-tag bg-muted text-muted-foreground">{tag.name}</span>
               ))}
             </div>
-          )}
+            <div className="flex gap-0.5 shrink-0">
+              <Button size="icon" variant="ghost" className="h-7 w-7 rounded-md hover:bg-comic-blue/10" onClick={() => onEdit(book)} aria-label={`Edit ${book.title}`}>
+                <Pencil className="w-3.5 h-3.5" />
+              </Button>
+              <Button size="icon" variant="ghost" className="h-7 w-7 rounded-md hover:bg-destructive/10 text-destructive" onClick={() => onDelete(book.id)} aria-label={`Delete ${book.title}`}>
+                <Trash2 className="w-3.5 h-3.5" />
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
     </article>
