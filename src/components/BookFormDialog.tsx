@@ -184,15 +184,35 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
             <Label htmlFor="author">Author</Label>
             <Input id="author" value={author} onChange={(e) => setAuthor(e.target.value)} />
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="genre">Genre</Label>
+          {/* Genre / Subject picker */}
+          <div>
+            <Label htmlFor="genre">Genre</Label>
+            {availableSubjects.length > 0 ? (
+              <div className="mt-1">
+                <p className="text-xs text-muted-foreground mb-2">
+                  Select up to 5 ({selectedSubjects.length}/5):
+                </p>
+                <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto p-2 rounded-lg border border-input bg-background">
+                  {availableSubjects.map((subject) => (
+                    <Badge
+                      key={subject}
+                      variant={selectedSubjects.includes(subject) ? 'default' : 'outline'}
+                      className="cursor-pointer text-xs"
+                      onClick={() => toggleSubject(subject)}
+                    >
+                      {subject}
+                      {selectedSubjects.includes(subject) && <X className="w-3 h-3 ml-1" />}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            ) : (
               <Input id="genre" value={genre} onChange={(e) => setGenre(e.target.value)} placeholder="Fiction; Mystery" />
-            </div>
-            <div>
-              <Label htmlFor="publishYear">Publish Year</Label>
-              <Input id="publishYear" type="number" value={publishYear} onChange={(e) => setPublishYear(e.target.value)} placeholder="2024" />
-            </div>
+            )}
+          </div>
+          <div>
+            <Label htmlFor="publishYear">Publish Year</Label>
+            <Input id="publishYear" type="number" value={publishYear} onChange={(e) => setPublishYear(e.target.value)} placeholder="2024" />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
