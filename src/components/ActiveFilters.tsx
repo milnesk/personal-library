@@ -1,7 +1,7 @@
 import { X } from 'lucide-react';
 import { FilterState } from '@/types/book';
 
-type FilterType = 'authors' | 'genres' | 'statuses' | 'tags';
+type FilterType = 'authors' | 'statuses' | 'tags';
 
 interface ActiveFiltersProps {
   filters: FilterState;
@@ -13,11 +13,10 @@ export function ActiveFilters({ filters, onRemoveFilter, onClearAll }: ActiveFil
   const activeFilters: { type: FilterType; value: string; label: string }[] = [];
 
   filters.authors.forEach((value) => activeFilters.push({ type: 'authors', value, label: `Author: ${value}` }));
-  filters.genres.forEach((value) => activeFilters.push({ type: 'genres', value, label: `Genre: ${value}` }));
-  filters.statuses.forEach((value) => activeFilters.push({ type: 'statuses', value, label: `Status: ${value === 'to_be_read' ? 'To Be Read' : 'Read'}` }));
+  filters.statuses.forEach((value) => activeFilters.push({ type: 'statuses', value, label: `Status: ${value.replace(/_/g, ' ')}` }));
   filters.tags.forEach((value) => activeFilters.push({ type: 'tags', value, label: `Tag: ${value}` }));
 
-  if (activeFilters.length === 0 && !filters.search) return null;
+  if (activeFilters.length === 0 && !filters.search && filters.isFiction === null) return null;
 
   return (
     <div className="flex flex-wrap items-center gap-2" role="region" aria-label="Active filters">
@@ -25,6 +24,11 @@ export function ActiveFilters({ filters, onRemoveFilter, onClearAll }: ActiveFil
       {filters.search && (
         <span className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
           Search: "{filters.search}"
+        </span>
+      )}
+      {filters.isFiction !== null && (
+        <span className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
+          {filters.isFiction ? 'Fiction' : 'Nonfiction'}
         </span>
       )}
       {activeFilters.map(({ type, value, label }) => (

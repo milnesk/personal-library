@@ -9,7 +9,6 @@ interface SortControlsProps {
 const sortOptions: { field: SortField; label: string }[] = [
   { field: 'title', label: 'Title' },
   { field: 'author', label: 'Author' },
-  { field: 'genre', label: 'Genre' },
   { field: 'status', label: 'Status' },
 ];
 

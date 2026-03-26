@@ -29,38 +29,33 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
 
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
-  const [genre, setGenre] = useState('');
   const [publishYear, setPublishYear] = useState('');
   const [isbn, setIsbn] = useState('');
   const [status, setStatus] = useState<'read' | 'to_be_read' | 'currently_reading'>('to_be_read');
   const [owned, setOwned] = useState(false);
+  const [isFiction, setIsFiction] = useState<boolean | null>(null);
   const [notes, setNotes] = useState('');
   const [coverUrl, setCoverUrl] = useState('');
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
   const [newTagName, setNewTagName] = useState('');
   const [isLooking, setIsLooking] = useState(false);
-  const [availableSubjects, setAvailableSubjects] = useState<string[]>([]);
-  const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
 
   useEffect(() => {
     if (book) {
       setTitle(book.title);
       setAuthor(book.author);
-      setGenre(book.genre);
       setPublishYear(book.publish_year?.toString() || '');
       setIsbn(book.isbn);
       setStatus(book.status);
       setOwned(book.owned);
+      setIsFiction(book.is_fiction);
       setNotes(book.notes);
       setCoverUrl(book.cover_url || '');
       setSelectedTagIds(book.tags?.map((t) => t.id) || []);
-      setAvailableSubjects([]);
-      setSelectedSubjects(book.genre ? book.genre.split(';').map((g) => g.trim()).filter(Boolean) : []);
     } else {
-      setTitle(''); setAuthor(''); setGenre(''); setPublishYear('');
-      setIsbn(''); setStatus('to_be_read'); setOwned(false); setNotes('');
-      setCoverUrl(''); setSelectedTagIds([]);
-      setAvailableSubjects([]); setSelectedSubjects([]);
+      setTitle(''); setAuthor(''); setPublishYear('');
+      setIsbn(''); setStatus('to_be_read'); setOwned(false); setIsFiction(null);
+      setNotes(''); setCoverUrl(''); setSelectedTagIds([]);
     }
   }, [book, open]);
 
@@ -75,31 +70,12 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
       setAuthor(result.author || author);
       if (result.publish_year) setPublishYear(result.publish_year.toString());
       if (result.cover_url) setCoverUrl(result.cover_url);
-      setAvailableSubjects(result.subjects);
-      setSelectedSubjects([]);
-      setGenre('');
-      toast.success('Book details found! Select genres from the subjects below.');
+      toast.success('Book details found!');
     } catch {
       toast.error('Could not find book. Check the ISBN and try again.');
     } finally {
       setIsLooking(false);
     }
-  };
-
-  const toggleSubject = (subject: string) => {
-    setSelectedSubjects((prev) => {
-      let next: string[];
-      if (prev.includes(subject)) {
-        next = prev.filter((s) => s !== subject);
-      } else if (prev.length >= 5) {
-        toast.error('Maximum 5 genres allowed');
-        return prev;
-      } else {
-        next = [...prev, subject];
-      }
-      setGenre(next.join('; '));
-      return next;
-    });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -119,11 +95,11 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
     onSave({
       title: title.trim(),
       author: author.trim(),
-      genre: genre.trim(),
       publish_year: publishYear ? parseInt(publishYear) : null,
       isbn: isbn.trim(),
       status,
       owned,
+      is_fiction: isFiction,
       notes: notes.trim(),
       cover_url: coverUrl,
       tagIds: selectedTagIds,
@@ -196,32 +172,6 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
             <Label htmlFor="author">Author</Label>
             <Input id="author" value={author} onChange={(e) => setAuthor(e.target.value)} />
           </div>
-          {/* Genre / Subject picker */}
-          <div>
-            <Label htmlFor="genre">Genre</Label>
-            {availableSubjects.length > 0 ? (
-              <div className="mt-1">
-                <p className="text-xs text-muted-foreground mb-2">
-                  Select up to 5 ({selectedSubjects.length}/5):
-                </p>
-                <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto p-2 rounded-lg border border-input bg-background">
-                  {availableSubjects.map((subject) => (
-                    <Badge
-                      key={subject}
-                      variant={selectedSubjects.includes(subject) ? 'default' : 'outline'}
-                      className="cursor-pointer text-xs"
-                      onClick={() => toggleSubject(subject)}
-                    >
-                      {subject}
-                      {selectedSubjects.includes(subject) && <X className="w-3 h-3 ml-1" />}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <Input id="genre" value={genre} onChange={(e) => setGenre(e.target.value)} placeholder="Fiction; Mystery" />
-            )}
-          </div>
           <div>
             <Label htmlFor="publishYear">Publish Year</Label>
             <Input id="publishYear" type="number" value={publishYear} onChange={(e) => setPublishYear(e.target.value)} placeholder="2024" />
@@ -238,12 +188,24 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex items-end pb-2">
-              <div className="flex items-center gap-2">
-                <Checkbox id="owned" checked={owned} onCheckedChange={(c) => setOwned(c === true)} />
-                <Label htmlFor="owned" className="cursor-pointer">I own this book</Label>
-              </div>
+            <div>
+              <Label>Type</Label>
+              <Select
+                value={isFiction === true ? 'fiction' : isFiction === false ? 'nonfiction' : 'unset'}
+                onValueChange={(v) => setIsFiction(v === 'fiction' ? true : v === 'nonfiction' ? false : null)}
+              >
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="unset">Not set</SelectItem>
+                  <SelectItem value="fiction">Fiction</SelectItem>
+                  <SelectItem value="nonfiction">Nonfiction</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <Checkbox id="owned" checked={owned} onCheckedChange={(c) => setOwned(c === true)} />
+            <Label htmlFor="owned" className="cursor-pointer">I own this book</Label>
           </div>
           <div>
             <Label>Tags</Label>

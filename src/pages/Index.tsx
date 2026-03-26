@@ -24,10 +24,10 @@ export default function Index() {
   const [filters, setFilters] = useState<FilterState>({
     search: '',
     authors: [],
-    genres: [],
     statuses: [],
     tags: [],
     owned: null,
+    isFiction: null,
   });
   const [sortConfig, setSortConfig] = useState<SortConfig>({ field: 'title', direction: 'asc' });
   const [bookDialogOpen, setBookDialogOpen] = useState(false);
@@ -35,7 +35,6 @@ export default function Index() {
   const [tagManagerOpen, setTagManagerOpen] = useState(false);
 
   const uniqueAuthors = useMemo(() => getUniqueValues(books, 'author'), [books]);
-  const uniqueGenres = useMemo(() => getUniqueValues(books, 'genre'), [books]);
   const uniqueTags = useMemo(() => getUniqueTags(books), [books]);
 
   const filteredBooks = useMemo(() => {
@@ -46,19 +45,12 @@ export default function Index() {
       result = result.filter((b) =>
         b.title.toLowerCase().includes(s) ||
         b.author.toLowerCase().includes(s) ||
-        b.genre.toLowerCase().includes(s) ||
         b.notes.toLowerCase().includes(s) ||
         b.isbn.toLowerCase().includes(s) ||
         b.tags?.some((t) => t.name.toLowerCase().includes(s))
       );
     }
     if (filters.authors.length > 0) result = result.filter((b) => filters.authors.includes(b.author));
-    if (filters.genres.length > 0) {
-      result = result.filter((b) => {
-        const bg = b.genre.split(';').map((g) => g.trim());
-        return filters.genres.some((g) => bg.includes(g));
-      });
-    }
     if (filters.statuses.length > 0) {
       result = result.filter((b) => filters.statuses.includes(b.status));
     }
@@ -67,6 +59,9 @@ export default function Index() {
     }
     if (filters.owned !== null) {
       result = result.filter((b) => b.owned === filters.owned);
+    }
+    if (filters.isFiction !== null) {
+      result = result.filter((b) => b.is_fiction === filters.isFiction);
     }
 
     result.sort((a, b) => {
@@ -104,15 +99,15 @@ export default function Index() {
     }
   };
 
-  const handleRemoveFilter = (type: 'authors' | 'genres' | 'statuses' | 'tags', value: string) => {
+  const handleRemoveFilter = (type: 'authors' | 'statuses' | 'tags', value: string) => {
     setFilters((prev) => ({ ...prev, [type]: (prev[type] as string[]).filter((v) => v !== value) }));
   };
 
   const handleClearAllFilters = () => {
-    setFilters({ search: '', authors: [], genres: [], statuses: [], tags: [], owned: null });
+    setFilters({ search: '', authors: [], statuses: [], tags: [], owned: null, isFiction: null });
   };
 
-  const hasActiveFilters = filters.search || filters.authors.length > 0 || filters.genres.length > 0 || filters.statuses.length > 0 || filters.tags.length > 0 || filters.owned !== null;
+  const hasActiveFilters = filters.search || filters.authors.length > 0 || filters.statuses.length > 0 || filters.tags.length > 0 || filters.owned !== null || filters.isFiction !== null;
 
   return (
     <div className="min-h-screen bg-background">
@@ -158,19 +153,29 @@ export default function Index() {
                 colorClass="bg-mustard text-mustard-foreground"
               />
               <FilterDropdown
-                label="Genre"
-                options={uniqueGenres}
-                selectedValues={filters.genres}
-                onChange={(values) => setFilters((prev) => ({ ...prev, genres: values }))}
-                colorClass="bg-olive text-olive-foreground"
-              />
-              <FilterDropdown
                 label="Status"
                 options={['read', 'currently_reading', 'to_be_read']}
                 selectedValues={filters.statuses}
                 onChange={(values) => setFilters((prev) => ({ ...prev, statuses: values }))}
                 colorClass="bg-sage text-sage-foreground"
                 formatLabel={(v) => v.replace(/_/g, ' ')}
+              />
+              <FilterDropdown
+                label="Type"
+                options={['Fiction', 'Nonfiction']}
+                selectedValues={filters.isFiction === true ? ['Fiction'] : filters.isFiction === false ? ['Nonfiction'] : []}
+                onChange={(values) => {
+                  if (values.includes('Fiction') && values.includes('Nonfiction')) {
+                    setFilters((prev) => ({ ...prev, isFiction: null }));
+                  } else if (values.includes('Fiction')) {
+                    setFilters((prev) => ({ ...prev, isFiction: true }));
+                  } else if (values.includes('Nonfiction')) {
+                    setFilters((prev) => ({ ...prev, isFiction: false }));
+                  } else {
+                    setFilters((prev) => ({ ...prev, isFiction: null }));
+                  }
+                }}
+                colorClass="bg-olive text-olive-foreground"
               />
               {uniqueTags.length > 0 && (
                 <FilterDropdown

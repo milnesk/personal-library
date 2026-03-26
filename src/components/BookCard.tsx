@@ -10,30 +10,13 @@ interface BookCardProps {
 }
 
 const accentColors = [
-  'hsl(155, 55%, 32%)',   // emerald
-  'hsl(320, 55%, 52%)',   // magenta
-  'hsl(260, 45%, 48%)',   // twilight purple
-  'hsl(38, 75%, 55%)',    // amber
+  'hsl(155, 55%, 32%)',
+  'hsl(320, 55%, 52%)',
+  'hsl(260, 45%, 48%)',
+  'hsl(38, 75%, 55%)',
 ];
 
-function getGenreColor(genre: string): string {
-  const g = genre.toLowerCase().trim();
-  if (g.includes('fiction')) return 'bg-comic-blue/15 text-comic-blue';
-  if (g.includes('mystery') || g.includes('thriller')) return 'bg-comic-red/15 text-comic-red';
-  if (g.includes('fantasy') || g.includes('sci-fi')) return 'bg-comic-olive/15 text-comic-olive';
-  if (g.includes('history') || g.includes('biography')) return 'bg-comic-amber/15 text-comic-amber';
-  const styles = [
-    'bg-comic-blue/15 text-comic-blue',
-    'bg-comic-red/15 text-comic-red',
-    'bg-comic-olive/15 text-comic-olive',
-    'bg-comic-amber/15 text-comic-amber',
-  ];
-  const hash = g.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-  return styles[hash % styles.length];
-}
-
 export function BookCard({ book, index, onEdit, onDelete }: BookCardProps) {
-  const genres = book.genre ? book.genre.split(';').map((g) => g.trim()).filter(Boolean) : [];
   const accent = accentColors[index % accentColors.length];
 
   return (
@@ -45,7 +28,6 @@ export function BookCard({ book, index, onEdit, onDelete }: BookCardProps) {
       }}
     >
       <div className="flex">
-        {/* Cover image */}
         {book.cover_url && (
           <div className="w-20 sm:w-24 shrink-0 overflow-hidden">
             <img
@@ -57,13 +39,22 @@ export function BookCard({ book, index, onEdit, onDelete }: BookCardProps) {
           </div>
         )}
 
-        {/* Content */}
         <div className="flex-1 p-4 sm:p-5 min-w-0">
           <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
               <h2 className="font-heading text-lg font-bold text-foreground leading-tight uppercase tracking-wide">
                 {book.title}
               </h2>
+              {book.is_fiction === true && (
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest bg-comic-blue/15 text-comic-blue">
+                  Fiction
+                </span>
+              )}
+              {book.is_fiction === false && (
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest bg-comic-olive/15 text-comic-olive">
+                  Nonfiction
+                </span>
+              )}
               {book.status === 'read' && (
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest bg-comic-olive/15 text-comic-olive">
                   <BookOpen className="w-3 h-3" /> Read
@@ -91,7 +82,6 @@ export function BookCard({ book, index, onEdit, onDelete }: BookCardProps) {
                 {book.publish_year && <span className="ml-1.5">({book.publish_year})</span>}
               </p>
             )}
-            
           </div>
 
           {book.notes && (
@@ -100,9 +90,6 @@ export function BookCard({ book, index, onEdit, onDelete }: BookCardProps) {
 
           <div className="flex items-end justify-between gap-2 mt-3">
             <div className="flex flex-wrap gap-1.5 min-w-0">
-              {genres.map((g, i) => (
-                <span key={i} className={`genre-tag ${getGenreColor(g)}`}>{g}</span>
-              ))}
               {book.tags?.map((tag) => (
                 <span key={tag.id} className="genre-tag bg-muted text-muted-foreground">{tag.name}</span>
               ))}
