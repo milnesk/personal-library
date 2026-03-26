@@ -3,7 +3,7 @@ const OPEN_LIBRARY_BASE = 'https://openlibrary.org';
 export interface OpenLibraryResult {
   title: string;
   author: string;
-  genre: string;
+  subjects: string[];
   publish_year: number | null;
   cover_url: string;
 }
@@ -36,7 +36,7 @@ export async function lookupISBN(isbn: string): Promise<OpenLibraryResult> {
     const workRes = await fetch(`${OPEN_LIBRARY_BASE}${workKey}.json`);
     if (workRes.ok) {
       const work = await workRes.json();
-      subjects = (work.subjects || []).slice(0, 5);
+      subjects = (work.subjects || []).slice(0, 20);
       authorKeys = (work.authors || []).map((a: any) => a.author?.key).filter(Boolean);
     }
   }
@@ -61,7 +61,7 @@ export async function lookupISBN(isbn: string): Promise<OpenLibraryResult> {
   return {
     title,
     author: authorNames.join(', '),
-    genre: subjects.join('; '),
+    subjects,
     publish_year,
     cover_url,
   };
