@@ -6,70 +6,70 @@
 
 @layer base {
   :root {
-    /* Comic Panel Palette — contemporary edition */
-    --background: 220 8% 96%;
-    --foreground: 220 15% 20%;
+    /* Krakoa-Inspired Palette */
+    --background: 150 8% 95%;
+    --foreground: 160 20% 15%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 220 15% 20%;
+    --card: 140 10% 99%;
+    --card-foreground: 160 20% 15%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 20%;
+    --popover: 140 10% 99%;
+    --popover-foreground: 160 20% 15%;
 
-    /* Royal Blue primary */
-    --primary: 228 72% 55%;
-    --primary-foreground: 0 0% 100%;
+    /* Deep Emerald primary */
+    --primary: 155 55% 32%;
+    --primary-foreground: 60 20% 95%;
 
-    /* Coral Red secondary */
-    --secondary: 4 68% 60%;
+    /* Magenta Portal secondary */
+    --secondary: 320 55% 52%;
     --secondary-foreground: 0 0% 100%;
 
-    /* Soft muted */
-    --muted: 220 10% 92%;
-    --muted-foreground: 220 10% 45%;
+    /* Soft muted — warm parchment */
+    --muted: 45 15% 90%;
+    --muted-foreground: 160 10% 42%;
 
-    /* Olive Green accent */
-    --accent: 68 35% 42%;
-    --accent-foreground: 0 0% 100%;
+    /* Warm Amber accent */
+    --accent: 38 75% 55%;
+    --accent-foreground: 30 30% 12%;
 
     --destructive: 0 65% 52%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 10% 75%;
-    --input: 220 10% 80%;
-    --ring: 228 72% 55%;
+    --border: 150 10% 78%;
+    --input: 150 10% 82%;
+    --ring: 155 55% 32%;
 
     --radius: 0.5rem;
 
-    /* Comic accent colors */
-    --comic-blue: 228 72% 55%;
+    /* Comic accent colors — Krakoa edition */
+    --comic-blue: 260 45% 48%;
     --comic-blue-foreground: 0 0% 100%;
-    --comic-red: 4 68% 60%;
+    --comic-red: 320 55% 52%;
     --comic-red-foreground: 0 0% 100%;
-    --comic-olive: 68 35% 42%;
-    --comic-olive-foreground: 0 0% 100%;
-    --comic-amber: 36 80% 58%;
-    --comic-amber-foreground: 220 15% 15%;
-    --comic-dark: 220 15% 25%;
+    --comic-olive: 155 55% 32%;
+    --comic-olive-foreground: 60 20% 95%;
+    --comic-amber: 38 75% 55%;
+    --comic-amber-foreground: 30 30% 12%;
+    --comic-dark: 160 20% 18%;
 
     /* Typography */
     --font-display: 'Bangers', 'Impact', sans-serif;
     --font-heading: 'Barlow Condensed', 'Impact', sans-serif;
     --font-body: 'Barlow', 'Helvetica Neue', sans-serif;
 
-    /* Shadows — modern, softer */
-    --shadow-card: 0 1px 3px hsl(220 15% 20% / 0.08), 0 4px 12px hsl(220 15% 20% / 0.06);
-    --shadow-hover: 0 4px 16px hsl(228 72% 55% / 0.15), 0 2px 6px hsl(220 15% 20% / 0.08);
-    --shadow-panel: 2px 2px 0px hsl(220 15% 25% / 0.6);
+    /* Shadows — organic, warm */
+    --shadow-card: 0 1px 3px hsl(160 20% 15% / 0.07), 0 4px 12px hsl(155 55% 32% / 0.05);
+    --shadow-hover: 0 4px 16px hsl(155 55% 32% / 0.15), 0 2px 6px hsl(160 20% 15% / 0.06);
+    --shadow-panel: 2px 2px 0px hsl(160 20% 18% / 0.5);
 
-    --sidebar-background: 220 8% 96%;
-    --sidebar-foreground: 220 15% 20%;
-    --sidebar-primary: 228 72% 55%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 68 35% 88%;
-    --sidebar-accent-foreground: 68 35% 22%;
-    --sidebar-border: 220 10% 80%;
-    --sidebar-ring: 228 72% 55%;
+    --sidebar-background: 150 8% 95%;
+    --sidebar-foreground: 160 20% 15%;
+    --sidebar-primary: 155 55% 32%;
+    --sidebar-primary-foreground: 60 20% 95%;
+    --sidebar-accent: 38 75% 90%;
+    --sidebar-accent-foreground: 38 50% 22%;
+    --sidebar-border: 150 10% 80%;
+    --sidebar-ring: 155 55% 32%;
   }
 }
 
