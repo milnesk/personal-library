@@ -118,7 +118,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      book_status: "read" | "to_be_read"
+      book_status: "read" | "to_be_read" | "currently_reading"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -246,7 +246,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      book_status: ["read", "to_be_read"],
+      book_status: ["read", "to_be_read", "currently_reading"],
     },
   },
 } as const
