@@ -10,10 +10,10 @@ interface BookCardProps {
 }
 
 const accentColors = [
-  'hsl(228, 72%, 55%)',   // blue
-  'hsl(4, 68%, 60%)',     // red
-  'hsl(68, 35%, 42%)',    // olive
-  'hsl(36, 80%, 58%)',    // amber
+  'hsl(155, 55%, 32%)',   // emerald
+  'hsl(320, 55%, 52%)',   // magenta
+  'hsl(260, 45%, 48%)',   // twilight purple
+  'hsl(38, 75%, 55%)',    // amber
 ];
 
 function getGenreColor(genre: string): string {
