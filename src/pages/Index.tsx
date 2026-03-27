@@ -10,8 +10,9 @@ import { ResultsCount } from '@/components/ResultsCount';
 import { ActiveFilters } from '@/components/ActiveFilters';
 import { BookFormDialog } from '@/components/BookFormDialog';
 import { TagManager } from '@/components/TagManager';
+import { ChangePasswordDialog } from '@/components/ChangePasswordDialog';
 import { Button } from '@/components/ui/button';
-import { Plus, Tags, LogIn, LogOut } from 'lucide-react';
+import { Plus, Tags, LogIn, LogOut, KeyRound } from 'lucide-react';
 import { FilterState, SortConfig, Book } from '@/types/book';
 import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -37,6 +38,7 @@ export default function Index() {
   const [bookDialogOpen, setBookDialogOpen] = useState(false);
   const [editingBook, setEditingBook] = useState<Book | null>(null);
   const [tagManagerOpen, setTagManagerOpen] = useState(false);
+  const [passwordDialogOpen, setPasswordDialogOpen] = useState(false);
 
   const uniqueAuthors = useMemo(() => getUniqueValues(books, 'author'), [books]);
   const uniqueTags = useMemo(() => getUniqueTags(books), [books]);
@@ -141,13 +143,22 @@ export default function Index() {
                 </>
               )}
               {isAdmin ? (
-                <Button
-                  variant="outline"
-                  onClick={() => signOut()}
-                  className="gap-2 font-heading uppercase tracking-wide font-bold text-sm bg-white/15 border-white/30 text-white hover:bg-white/25 hover:text-white"
-                >
-                  <LogOut className="w-4 h-4" /> Sign Out
-                </Button>
+                <>
+                  <Button
+                    variant="outline"
+                    onClick={() => setPasswordDialogOpen(true)}
+                    className="gap-2 font-heading uppercase tracking-wide font-bold text-sm bg-white/15 border-white/30 text-white hover:bg-white/25 hover:text-white"
+                  >
+                    <KeyRound className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => signOut()}
+                    className="gap-2 font-heading uppercase tracking-wide font-bold text-sm bg-white/15 border-white/30 text-white hover:bg-white/25 hover:text-white"
+                  >
+                    <LogOut className="w-4 h-4" /> Sign Out
+                  </Button>
+                </>
               ) : (
                 <Link to="/login">
                   <Button
@@ -286,6 +297,7 @@ export default function Index() {
         isSaving={addBook.isPending || updateBook.isPending}
       />
       <TagManager open={tagManagerOpen} onOpenChange={setTagManagerOpen} />
+      <ChangePasswordDialog open={passwordDialogOpen} onOpenChange={setPasswordDialogOpen} />
     </div>
   );
 }
