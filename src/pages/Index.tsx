@@ -297,6 +297,7 @@ export default function Index() {
         isSaving={addBook.isPending || updateBook.isPending}
       />
       <TagManager open={tagManagerOpen} onOpenChange={setTagManagerOpen} />
+      <ChangePasswordDialog open={passwordDialogOpen} onOpenChange={setPasswordDialogOpen} />
     </div>
   );
 }
