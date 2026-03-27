@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useBooks, useAddBook, useUpdateBook, useDeleteBook, getUniqueValues, getUniqueTags } from '@/hooks/useBooks';
+import { useAuth } from '@/hooks/useAuth';
 import { Header } from '@/components/Header';
 import { SearchBar } from '@/components/SearchBar';
 import { FilterDropdown } from '@/components/FilterDropdown';
@@ -10,10 +11,11 @@ import { ActiveFilters } from '@/components/ActiveFilters';
 import { BookFormDialog } from '@/components/BookFormDialog';
 import { TagManager } from '@/components/TagManager';
 import { Button } from '@/components/ui/button';
-import { Plus, Tags } from 'lucide-react';
+import { Plus, Tags, LogIn, LogOut } from 'lucide-react';
 import { FilterState, SortConfig, Book } from '@/types/book';
 import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Link } from 'react-router-dom';
 
 export default function Index() {
   const { data: books = [], isLoading, error } = useBooks();
