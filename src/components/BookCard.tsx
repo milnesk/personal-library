@@ -5,8 +5,8 @@ import { Button } from '@/components/ui/button';
 interface BookCardProps {
   book: Book;
   index: number;
-  onEdit: (book: Book) => void;
-  onDelete: (id: string) => void;
+  onEdit?: (book: Book) => void;
+  onDelete?: (id: string) => void;
 }
 
 const accentColors = [
@@ -94,14 +94,20 @@ export function BookCard({ book, index, onEdit, onDelete }: BookCardProps) {
                 <span key={tag.id} className="genre-tag bg-muted text-muted-foreground">{tag.name}</span>
               ))}
             </div>
-            <div className="flex gap-0.5 shrink-0">
-              <Button size="icon" variant="ghost" className="h-7 w-7 rounded-md hover:bg-comic-blue/10" onClick={() => onEdit(book)} aria-label={`Edit ${book.title}`}>
-                <Pencil className="w-3.5 h-3.5" />
-              </Button>
-              <Button size="icon" variant="ghost" className="h-7 w-7 rounded-md hover:bg-destructive/10 text-destructive" onClick={() => onDelete(book.id)} aria-label={`Delete ${book.title}`}>
-                <Trash2 className="w-3.5 h-3.5" />
-              </Button>
-            </div>
+            {(onEdit || onDelete) && (
+              <div className="flex gap-0.5 shrink-0">
+                {onEdit && (
+                  <Button size="icon" variant="ghost" className="h-7 w-7 rounded-md hover:bg-comic-blue/10" onClick={() => onEdit(book)} aria-label={`Edit ${book.title}`}>
+                    <Pencil className="w-3.5 h-3.5" />
+                  </Button>
+                )}
+                {onDelete && (
+                  <Button size="icon" variant="ghost" className="h-7 w-7 rounded-md hover:bg-destructive/10 text-destructive" onClick={() => onDelete(book.id)} aria-label={`Delete ${book.title}`}>
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </Button>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
