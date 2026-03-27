@@ -22,6 +22,8 @@ export default function Index() {
   const addBook = useAddBook();
   const updateBook = useUpdateBook();
   const deleteBook = useDeleteBook();
+  const { user, signOut } = useAuth();
+  const isAdmin = !!user;
 
   const [filters, setFilters] = useState<FilterState>({
     search: '',
