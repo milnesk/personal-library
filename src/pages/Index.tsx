@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useBooks, useAddBook, useUpdateBook, useDeleteBook, getUniqueValues, getUniqueTags } from '@/hooks/useBooks';
+import { useAuth } from '@/hooks/useAuth';
 import { Header } from '@/components/Header';
 import { SearchBar } from '@/components/SearchBar';
 import { FilterDropdown } from '@/components/FilterDropdown';
@@ -10,16 +11,19 @@ import { ActiveFilters } from '@/components/ActiveFilters';
 import { BookFormDialog } from '@/components/BookFormDialog';
 import { TagManager } from '@/components/TagManager';
 import { Button } from '@/components/ui/button';
-import { Plus, Tags } from 'lucide-react';
+import { Plus, Tags, LogIn, LogOut } from 'lucide-react';
 import { FilterState, SortConfig, Book } from '@/types/book';
 import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Link } from 'react-router-dom';
 
 export default function Index() {
   const { data: books = [], isLoading, error } = useBooks();
   const addBook = useAddBook();
   const updateBook = useUpdateBook();
   const deleteBook = useDeleteBook();
+  const { user, signOut } = useAuth();
+  const isAdmin = !!user;
 
   const [filters, setFilters] = useState<FilterState>({
     search: '',
@@ -119,19 +123,41 @@ export default function Index() {
         <Header>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <div className="flex items-center gap-3">
-              <Button
-                onClick={() => { setEditingBook(null); setBookDialogOpen(true); }}
-                className="gap-2 font-heading uppercase tracking-wide font-bold text-sm"
-              >
-                <Plus className="w-4 h-4" /> Add Book
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => setTagManagerOpen(true)}
-                className="gap-2 font-heading uppercase tracking-wide font-bold text-sm bg-white/15 border-white/30 text-white hover:bg-white/25 hover:text-white"
-              >
-                <Tags className="w-4 h-4" /> Manage Tags
-              </Button>
+              {isAdmin && (
+                <>
+                  <Button
+                    onClick={() => { setEditingBook(null); setBookDialogOpen(true); }}
+                    className="gap-2 font-heading uppercase tracking-wide font-bold text-sm"
+                  >
+                    <Plus className="w-4 h-4" /> Add Book
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => setTagManagerOpen(true)}
+                    className="gap-2 font-heading uppercase tracking-wide font-bold text-sm bg-white/15 border-white/30 text-white hover:bg-white/25 hover:text-white"
+                  >
+                    <Tags className="w-4 h-4" /> Manage Tags
+                  </Button>
+                </>
+              )}
+              {isAdmin ? (
+                <Button
+                  variant="outline"
+                  onClick={() => signOut()}
+                  className="gap-2 font-heading uppercase tracking-wide font-bold text-sm bg-white/15 border-white/30 text-white hover:bg-white/25 hover:text-white"
+                >
+                  <LogOut className="w-4 h-4" /> Sign Out
+                </Button>
+              ) : (
+                <Link to="/login">
+                  <Button
+                    variant="outline"
+                    className="gap-2 font-heading uppercase tracking-wide font-bold text-sm bg-white/15 border-white/30 text-white hover:bg-white/25 hover:text-white"
+                  >
+                    <LogIn className="w-4 h-4" /> Admin
+                  </Button>
+                </Link>
+              )}
             </div>
             <div className="flex-1 min-w-0 sm:max-w-sm">
               <label htmlFor="hero-search" className="sr-only">Search books</label>
@@ -243,8 +269,8 @@ export default function Index() {
                   key={book.id}
                   book={book}
                   index={i}
-                  onEdit={(b) => { setEditingBook(b); setBookDialogOpen(true); }}
-                  onDelete={handleDelete}
+                  onEdit={isAdmin ? (b) => { setEditingBook(b); setBookDialogOpen(true); } : undefined}
+                  onDelete={isAdmin ? handleDelete : undefined}
                 />
               ))
             )}
