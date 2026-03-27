@@ -122,6 +122,40 @@ export default function Index() {
   return (
     <div className="min-h-screen bg-background">
       <div className="container max-w-5xl mx-auto px-4 pb-12">
+        {/* Admin bar */}
+        <div className="flex justify-end items-center gap-2 pt-3 pb-1">
+          {isAdmin ? (
+            <>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setPasswordDialogOpen(true)}
+                className="gap-1.5 text-xs text-muted-foreground hover:text-foreground"
+              >
+                <KeyRound className="w-3.5 h-3.5" /> Change Password
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => signOut()}
+                className="gap-1.5 text-xs text-muted-foreground hover:text-foreground"
+              >
+                <LogOut className="w-3.5 h-3.5" /> Sign Out
+              </Button>
+            </>
+          ) : (
+            <Link to="/login">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="gap-1.5 text-xs text-muted-foreground hover:text-foreground"
+              >
+                <LogIn className="w-3.5 h-3.5" /> Admin
+              </Button>
+            </Link>
+          )}
+        </div>
+
         <Header>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <div className="flex items-center gap-3">
@@ -141,33 +175,6 @@ export default function Index() {
                     <Tags className="w-4 h-4" /> Manage Tags
                   </Button>
                 </>
-              )}
-              {isAdmin ? (
-                <>
-                  <Button
-                    variant="outline"
-                    onClick={() => setPasswordDialogOpen(true)}
-                    className="gap-2 font-heading uppercase tracking-wide font-bold text-sm bg-white/15 border-white/30 text-white hover:bg-white/25 hover:text-white"
-                  >
-                    <KeyRound className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    onClick={() => signOut()}
-                    className="gap-2 font-heading uppercase tracking-wide font-bold text-sm bg-white/15 border-white/30 text-white hover:bg-white/25 hover:text-white"
-                  >
-                    <LogOut className="w-4 h-4" /> Sign Out
-                  </Button>
-                </>
-              ) : (
-                <Link to="/login">
-                  <Button
-                    variant="outline"
-                    className="gap-2 font-heading uppercase tracking-wide font-bold text-sm bg-white/15 border-white/30 text-white hover:bg-white/25 hover:text-white"
-                  >
-                    <LogIn className="w-4 h-4" /> Admin
-                  </Button>
-                </Link>
               )}
             </div>
             <div className="flex-1 min-w-0 sm:max-w-sm">
