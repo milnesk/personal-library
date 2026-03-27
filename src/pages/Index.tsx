@@ -181,6 +181,23 @@ export default function Index() {
                 }}
                 colorClass="bg-olive text-olive-foreground"
               />
+              <FilterDropdown
+                label="Owned"
+                options={['Owned', 'Not Owned']}
+                selectedValues={filters.owned === true ? ['Owned'] : filters.owned === false ? ['Not Owned'] : []}
+                onChange={(values) => {
+                  if (values.includes('Owned') && values.includes('Not Owned')) {
+                    setFilters((prev) => ({ ...prev, owned: null }));
+                  } else if (values.includes('Owned')) {
+                    setFilters((prev) => ({ ...prev, owned: true }));
+                  } else if (values.includes('Not Owned')) {
+                    setFilters((prev) => ({ ...prev, owned: false }));
+                  } else {
+                    setFilters((prev) => ({ ...prev, owned: null }));
+                  }
+                }}
+                colorClass="bg-sage text-sage-foreground"
+              />
               {uniqueTags.length > 0 && (
                 <FilterDropdown
                   label="Tags"
