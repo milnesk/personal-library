@@ -1,24 +1,37 @@
 # KM Library 📚
 
-A personal book tracking app with a Krakoa-inspired comic book aesthetic.
+A personal book tracking app with a Krakoa-inspired comic book aesthetic. Built with [Lovable](https://lovable.dev).
+
+**Live site:** [km-library.lovable.app](https://km-library.lovable.app)
 
 ## Features
 
 - **ISBN Lookup** — Enter an ISBN to auto-fill title, author, cover, and year from Open Library API
-- **Genre Selection** — Pick up to 5 subjects from Open Library's subject data
 - **Duplicate Detection** — Prevents adding books with the same ISBN
 - **Three Reading Statuses** — Track books as Read, Currently Reading, or To Be Read
+- **Fiction / Nonfiction Toggle** — Classify books as fiction, nonfiction, or unset
 - **Tag System** — Create and assign custom tags for flexible organization
 - **Owned Flag** — Mark books you physically own
-- **Search & Filter** — Full-text search plus multi-select filters for author, genre, status, and tags
-- **Sort Controls** — Sort by title, author, genre, or status
+- **Search & Filter** — Full-text search plus multi-select filters for author, status, tags, owned, and fiction/nonfiction
+- **Smart Default Sort** — Favorites first (A–Z), then everything else (A–Z)
+- **Sort Controls** — Sort by title, author, or status
 - **Mobile-First Design** — Optimized for phone browsing with compact action buttons
+
+## Authentication & Security
+
+This is a single-admin app. One authenticated user (the library owner) can add, edit, and delete books and manage tags. All other visitors have read-only access to browse the collection.
+
+- **Admin login** via email/password (top bar)
+- **Password change** available from the admin bar
+- **Row Level Security (RLS)** enforced on all tables:
+  - `SELECT` is public (read-only for visitors)
+  - `INSERT`, `UPDATE`, `DELETE` require authentication
 
 ## Tech Stack
 
 - **React 18** + **TypeScript** + **Vite**
 - **Tailwind CSS** + **shadcn/ui**
-- **Lovable Cloud** (database & backend)
+- **Lovable Cloud** (database, auth & backend)
 - **TanStack Query** for data fetching
 - **Open Library API** for book metadata
 
@@ -26,11 +39,13 @@ A personal book tracking app with a Krakoa-inspired comic book aesthetic.
 
 Inspired by the Krakoa era of X-Men comics — lush greens, glowing magentas, deep purples, and warm ambers. Features a fantasy library hero image with semi-transparent overlaid controls.
 
+Fonts: **Bangers** (display), **Barlow** / **Barlow Condensed** (body).
+
 ## Database Schema
 
 | Table | Purpose |
 |-------|---------|
-| `books` | Core book records (title, author, genre, year, ISBN, status, owned, cover, notes) |
+| `books` | Core book records (title, author, year, ISBN, status, is_fiction, owned, cover, notes) |
 | `tags` | User-defined tag names |
 | `book_tags` | Many-to-many junction between books and tags |
 
@@ -45,13 +60,13 @@ Inspired by the Krakoa era of X-Men comics — lush greens, glowing magentas, de
 For one-time imports, prepare a CSV with these columns:
 
 ```
-title,author,genre,publish_year,isbn,status,owned,notes
-"Book Title","Author Name","Genre1; Genre2",2024,"978-0-000-00000-0","read",true,"Optional notes"
+title,author,publish_year,isbn,status,owned,is_fiction,notes
+"Book Title","Author Name",2024,"978-0-000-00000-0","read",true,true,"Optional notes"
 ```
 
-- `genre`: semicolon-separated (e.g. `"Fiction; Mystery"`)
 - `status`: `read`, `currently_reading`, or `to_be_read`
 - `owned`: `true` or `false`
+- `is_fiction`: `true`, `false`, or empty (for unset)
 
 ## Development
 
