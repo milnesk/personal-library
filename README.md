@@ -13,7 +13,7 @@ A personal book tracking app with a Krakoa-inspired comic book aesthetic. Built 
 - **Tag System** — Create and assign custom tags for flexible organization
 - **Owned Flag** — Mark books you physically own
 - **Search & Filter** — Full-text search plus multi-select filters for author, status, tags, owned, and fiction/nonfiction
-- **Smart Default Sort** — Favorites first (A–Z), then everything else (A–Z)
+- **Smart Default Sort** — Favorites first (A–Z), then everything else (A–Z); numeric titles sort after alphabetical
 - **Sort Controls** — Sort by title, author, or status
 - **Mobile-First Design** — Optimized for phone browsing with compact action buttons
 
