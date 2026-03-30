@@ -71,8 +71,8 @@ export default function Index() {
     }
 
     result.sort((a, b) => {
-      const aFav = a.tags?.some((t) => t.name.toLowerCase() === 'favorites') ? 1 : 0;
-      const bFav = b.tags?.some((t) => t.name.toLowerCase() === 'favorites') ? 1 : 0;
+      const aFav = a.tags?.some((t) => t.name.toLowerCase() === 'favorite') ? 1 : 0;
+      const bFav = b.tags?.some((t) => t.name.toLowerCase() === 'favorite') ? 1 : 0;
       if (aFav !== bFav) return bFav - aFav; // Favorites first
 
       const aVal = String(a[sortConfig.field] || '').toLowerCase();
