@@ -77,7 +77,10 @@ export default function Index() {
 
       const aVal = String(a[sortConfig.field] || '').toLowerCase();
       const bVal = String(b[sortConfig.field] || '').toLowerCase();
-      const cmp = aVal.localeCompare(bVal);
+      const aStartsNum = /^\d/.test(aVal);
+      const bStartsNum = /^\d/.test(bVal);
+      if (aStartsNum !== bStartsNum) return aStartsNum ? 1 : -1;
+      const cmp = aVal.localeCompare(bVal, undefined, { numeric: true });
       return sortConfig.direction === 'asc' ? cmp : -cmp;
     });
 
