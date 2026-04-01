@@ -52,11 +52,12 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
       setIsFiction(book.is_fiction);
       setNotes(book.notes);
       setCoverUrl(book.cover_url || '');
+      setDescription(book.description || '');
       setSelectedTagIds(book.tags?.map((t) => t.id) || []);
     } else {
       setTitle(''); setAuthor(''); setPublishYear('');
       setIsbn(''); setStatus('to_be_read'); setOwned(false); setIsFiction(null);
-      setNotes(''); setCoverUrl(''); setSelectedTagIds([]);
+      setNotes(''); setCoverUrl(''); setDescription(''); setSelectedTagIds([]);
     }
   }, [book, open]);
 
