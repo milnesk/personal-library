@@ -11,6 +11,8 @@ interface BookCardProps {
   onDelete?: (id: string) => void;
 }
 
+const MAX_VISIBLE_TAGS = 3;
+
 const accentColors = [
   'hsl(155, 55%, 32%)',
   'hsl(320, 55%, 52%)',
