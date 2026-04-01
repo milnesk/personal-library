@@ -36,6 +36,7 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
   const [isFiction, setIsFiction] = useState<boolean | null>(null);
   const [notes, setNotes] = useState('');
   const [coverUrl, setCoverUrl] = useState('');
+  const [description, setDescription] = useState('');
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
   const [newTagName, setNewTagName] = useState('');
   const [isLooking, setIsLooking] = useState(false);
