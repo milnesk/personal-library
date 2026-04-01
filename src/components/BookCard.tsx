@@ -20,6 +20,7 @@ const accentColors = [
 
 export function BookCard({ book, index, onEdit, onDelete }: BookCardProps) {
   const accent = accentColors[index % accentColors.length];
+  const [summaryOpen, setSummaryOpen] = useState(false);
 
   return (
     <article
