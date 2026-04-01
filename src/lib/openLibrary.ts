@@ -28,11 +28,20 @@ export async function lookupISBN(isbn: string): Promise<OpenLibraryResult> {
   const workKey = edition.works?.[0]?.key;
   let authorKeys: string[] = [];
 
+  let description = '';
+
   if (workKey) {
     const workRes = await fetch(`${OPEN_LIBRARY_BASE}${workKey}.json`);
     if (workRes.ok) {
       const work = await workRes.json();
       authorKeys = (work.authors || []).map((a: any) => a.author?.key).filter(Boolean);
+
+      // Description can be a string or { type, value } object
+      if (work.description) {
+        description = typeof work.description === 'string'
+          ? work.description
+          : work.description.value || '';
+      }
     }
   }
 
