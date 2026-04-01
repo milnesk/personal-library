@@ -1,6 +1,8 @@
-import { Pencil, Trash2, BookOpen, BookMarked, BookOpenCheck } from 'lucide-react';
+import { useState } from 'react';
+import { Pencil, Trash2, BookOpen, BookMarked, BookOpenCheck, ChevronDown, ChevronUp } from 'lucide-react';
 import { Book } from '@/types/book';
 import { Button } from '@/components/ui/button';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 interface BookCardProps {
   book: Book;
@@ -18,6 +20,7 @@ const accentColors = [
 
 export function BookCard({ book, index, onEdit, onDelete }: BookCardProps) {
   const accent = accentColors[index % accentColors.length];
+  const [summaryOpen, setSummaryOpen] = useState(false);
 
   return (
     <article
@@ -83,6 +86,20 @@ export function BookCard({ book, index, onEdit, onDelete }: BookCardProps) {
               </p>
             )}
           </div>
+
+          {book.description && (
+            <Collapsible open={summaryOpen} onOpenChange={setSummaryOpen} className="mt-2.5">
+              <CollapsibleTrigger asChild>
+                <button className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-primary hover:text-primary/80 transition-colors">
+                  {summaryOpen ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                  {summaryOpen ? 'Hide Summary' : 'Show Summary'}
+                </button>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="mt-2">
+                <p className="text-sm text-muted-foreground leading-relaxed">{book.description}</p>
+              </CollapsibleContent>
+            </Collapsible>
+          )}
 
           {book.notes && (
             <p className="text-sm text-muted-foreground mt-2.5 leading-relaxed">{book.notes}</p>

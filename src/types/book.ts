@@ -8,6 +8,7 @@ export interface Book {
   owned: boolean;
   is_fiction: boolean | null;
   cover_url: string;
+  description: string;
   notes: string;
   created_at: string;
   updated_at: string;

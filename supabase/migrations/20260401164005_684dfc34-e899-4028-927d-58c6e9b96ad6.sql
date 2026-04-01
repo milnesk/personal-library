@@ -1,0 +1,1 @@
+ALTER TABLE public.books ADD COLUMN description text;

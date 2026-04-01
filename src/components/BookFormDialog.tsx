@@ -36,6 +36,7 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
   const [isFiction, setIsFiction] = useState<boolean | null>(null);
   const [notes, setNotes] = useState('');
   const [coverUrl, setCoverUrl] = useState('');
+  const [description, setDescription] = useState('');
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
   const [newTagName, setNewTagName] = useState('');
   const [isLooking, setIsLooking] = useState(false);
@@ -51,11 +52,12 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
       setIsFiction(book.is_fiction);
       setNotes(book.notes);
       setCoverUrl(book.cover_url || '');
+      setDescription(book.description || '');
       setSelectedTagIds(book.tags?.map((t) => t.id) || []);
     } else {
       setTitle(''); setAuthor(''); setPublishYear('');
       setIsbn(''); setStatus('to_be_read'); setOwned(false); setIsFiction(null);
-      setNotes(''); setCoverUrl(''); setSelectedTagIds([]);
+      setNotes(''); setCoverUrl(''); setDescription(''); setSelectedTagIds([]);
     }
   }, [book, open]);
 
@@ -70,6 +72,7 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
       setAuthor(result.author || author);
       if (result.publish_year) setPublishYear(result.publish_year.toString());
       if (result.cover_url) setCoverUrl(result.cover_url);
+      if (result.description) setDescription(result.description);
       toast.success('Book details found!');
     } catch {
       toast.error('Could not find book. Check the ISBN and try again.');
@@ -101,6 +104,7 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
       owned,
       is_fiction: isFiction,
       notes: notes.trim(),
+      description: description.trim(),
       cover_url: coverUrl,
       tagIds: selectedTagIds,
       ...(book ? { id: book.id } : {}),
