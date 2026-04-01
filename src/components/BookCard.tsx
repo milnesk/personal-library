@@ -1,6 +1,8 @@
-import { Pencil, Trash2, BookOpen, BookMarked, BookOpenCheck } from 'lucide-react';
+import { useState } from 'react';
+import { Pencil, Trash2, BookOpen, BookMarked, BookOpenCheck, ChevronDown, ChevronUp } from 'lucide-react';
 import { Book } from '@/types/book';
 import { Button } from '@/components/ui/button';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 interface BookCardProps {
   book: Book;
