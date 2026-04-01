@@ -52,6 +52,7 @@ export type Database = {
           author: string
           cover_url: string | null
           created_at: string
+          description: string | null
           id: string
           is_fiction: boolean | null
           isbn: string | null
@@ -66,6 +67,7 @@ export type Database = {
           author?: string
           cover_url?: string | null
           created_at?: string
+          description?: string | null
           id?: string
           is_fiction?: boolean | null
           isbn?: string | null
@@ -80,6 +82,7 @@ export type Database = {
           author?: string
           cover_url?: string | null
           created_at?: string
+          description?: string | null
           id?: string
           is_fiction?: boolean | null
           isbn?: string | null
