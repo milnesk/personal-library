@@ -104,6 +104,7 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
       owned,
       is_fiction: isFiction,
       notes: notes.trim(),
+      description: description.trim(),
       cover_url: coverUrl,
       tagIds: selectedTagIds,
       ...(book ? { id: book.id } : {}),

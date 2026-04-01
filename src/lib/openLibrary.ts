@@ -65,5 +65,6 @@ export async function lookupISBN(isbn: string): Promise<OpenLibraryResult> {
     author: authorNames.join(', '),
     publish_year,
     cover_url,
+    description,
   };
 }
