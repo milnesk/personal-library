@@ -5,6 +5,7 @@ export interface OpenLibraryResult {
   author: string;
   publish_year: number | null;
   cover_url: string;
+  description: string;
 }
 
 export async function lookupISBN(isbn: string): Promise<OpenLibraryResult> {
