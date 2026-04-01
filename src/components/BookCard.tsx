@@ -11,6 +11,8 @@ interface BookCardProps {
   onDelete?: (id: string) => void;
 }
 
+const MAX_VISIBLE_TAGS = 3;
+
 const accentColors = [
   'hsl(155, 55%, 32%)',
   'hsl(320, 55%, 52%)',
@@ -105,11 +107,20 @@ export function BookCard({ book, index, onEdit, onDelete }: BookCardProps) {
             <p className="text-sm text-muted-foreground mt-2.5 leading-relaxed">{book.notes}</p>
           )}
 
-          <div className="flex items-end justify-between gap-2 mt-3">
+          {(book.tags?.length || book.description || book.notes) && (
+            <hr className="border-border/50 mt-3" />
+          )}
+
+          <div className="flex items-end justify-between gap-2 mt-2.5">
             <div className="flex flex-wrap gap-1.5 min-w-0">
-              {book.tags?.map((tag) => (
+              {book.tags?.slice(0, MAX_VISIBLE_TAGS).map((tag) => (
                 <span key={tag.id} className="genre-tag bg-muted text-muted-foreground">{tag.name}</span>
               ))}
+              {(book.tags?.length ?? 0) > MAX_VISIBLE_TAGS && (
+                <span className="genre-tag bg-muted text-muted-foreground">
+                  +{(book.tags?.length ?? 0) - MAX_VISIBLE_TAGS}
+                </span>
+              )}
             </div>
             {(onEdit || onDelete) && (
               <div className="flex gap-0.5 shrink-0">
