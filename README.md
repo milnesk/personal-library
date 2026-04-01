@@ -7,15 +7,18 @@ A personal book tracking app with a Krakoa-inspired comic book aesthetic. Built 
 ## Features
 
 - **ISBN Lookup** — Enter an ISBN to auto-fill title, author, cover, and year from Open Library API
+- **Book Summaries** — Automatically fetches descriptions from Open Library; toggle with Show/Hide Summary
 - **Duplicate Detection** — Prevents adding books with the same ISBN
 - **Three Reading Statuses** — Track books as Read, Currently Reading, or To Be Read
 - **Fiction / Nonfiction Toggle** — Classify books as fiction, nonfiction, or unset
-- **Tag System** — Create and assign custom tags for flexible organization
+- **Tag System** — Create and assign custom tags; cards show the first 3 inline with a "+N" overflow chip
 - **Owned Flag** — Mark books you physically own
 - **Search & Filter** — Full-text search plus multi-select filters for author, status, tags, owned, and fiction/nonfiction
 - **Smart Default Sort** — Favorites first (A–Z), then everything else (A–Z); numeric titles sort after alphabetical
 - **Sort Controls** — Sort by title, author, or status
+- **Two-Row Card Footer** — Tags and action buttons on separate rows for a cleaner layout
 - **Mobile-First Design** — Optimized for phone browsing with compact action buttons
+- **Google Analytics** — Site-wide tracking via GA4
 
 ## Authentication & Security
 
