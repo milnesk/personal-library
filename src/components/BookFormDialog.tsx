@@ -72,6 +72,7 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
       setAuthor(result.author || author);
       if (result.publish_year) setPublishYear(result.publish_year.toString());
       if (result.cover_url) setCoverUrl(result.cover_url);
+      if (result.description) setDescription(result.description);
       toast.success('Book details found!');
     } catch {
       toast.error('Could not find book. Check the ISBN and try again.');
