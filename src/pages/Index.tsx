@@ -123,7 +123,7 @@ export default function Index() {
   const hasActiveFilters = filters.search || filters.authors.length > 0 || filters.statuses.length > 0 || filters.tags.length > 0 || filters.owned !== null || filters.isFiction !== null;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       <div className="container max-w-5xl mx-auto px-4 pb-12">
         {/* Admin bar */}
         <div className="flex justify-end items-center gap-2 pt-3 pb-1">
