@@ -27,6 +27,7 @@ function isValidIsbn13(value: string): boolean {
 
 export function BarcodeScannerDialog({ open, onOpenChange, onDetected }: BarcodeScannerDialogProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const streamRef = useRef<MediaStream | null>(null);
   const controlsRef = useRef<IScannerControls | null>(null);
   const [status, setStatus] = useState<'starting' | 'scanning' | 'error'>('starting');
   const [errorMsg, setErrorMsg] = useState('');
@@ -43,44 +44,71 @@ export function BarcodeScannerDialog({ open, onOpenChange, onDetected }: Barcode
     hints.set(DecodeHintType.TRY_HARDER, true);
     const reader = new BrowserMultiFormatReader(hints);
 
+    const cleanup = () => {
+      controlsRef.current?.stop();
+      controlsRef.current = null;
+      streamRef.current?.getTracks().forEach((t) => t.stop());
+      streamRef.current = null;
+      if (videoRef.current) {
+        videoRef.current.srcObject = null;
+      }
+    };
+
     (async () => {
       try {
         if (!navigator.mediaDevices?.getUserMedia) {
           throw new Error('Camera not supported in this browser');
         }
 
-        const constraints: MediaStreamConstraints = {
+        // Manually request the stream so we control play() — iOS Firefox/Safari
+        // sometimes hang if a library calls play() before the element is ready.
+        const stream = await navigator.mediaDevices.getUserMedia({
           video: { facingMode: { ideal: 'environment' } },
           audio: false,
-        };
-
-        const controls = await reader.decodeFromConstraints(
-          constraints,
-          videoRef.current!,
-          (result, err) => {
-            if (cancelled) return;
-            if (result) {
-              const text = result.getText();
-              if (isValidIsbn13(text)) {
-                controlsRef.current?.stop();
-                onDetected(text);
-                onOpenChange(false);
-              }
-            }
-          }
-        );
+        });
         if (cancelled) {
-          controls.stop();
+          stream.getTracks().forEach((t) => t.stop());
           return;
         }
-        controlsRef.current = controls;
+        streamRef.current = stream;
+
+        const video = videoRef.current;
+        if (!video) throw new Error('Video element not ready');
+
+        // Required on iOS to allow inline autoplay.
+        video.setAttribute('playsinline', 'true');
+        video.setAttribute('webkit-playsinline', 'true');
+        video.muted = true;
+        video.srcObject = stream;
+
+        try {
+          await video.play();
+        } catch {
+          // Some browsers reject play() but still start the stream; ignore.
+        }
+
+        if (cancelled) return;
         setStatus('scanning');
+
+        const controls = reader.decodeFromVideoElement(video, (result) => {
+          if (cancelled) return;
+          if (result) {
+            const text = result.getText();
+            if (isValidIsbn13(text)) {
+              cleanup();
+              onDetected(text);
+              onOpenChange(false);
+            }
+          }
+        });
+        controlsRef.current = await controls;
       } catch (e: any) {
         if (cancelled) return;
         const name = e?.name || '';
         let msg = e?.message || 'Could not start camera';
         if (name === 'NotAllowedError') msg = 'Camera permission denied. Enable it in your browser settings and try again.';
         else if (name === 'NotFoundError') msg = 'No camera found on this device.';
+        else if (name === 'NotReadableError') msg = 'Camera is in use by another app. Close it and try again.';
         setErrorMsg(msg);
         setStatus('error');
         toast.error(msg);
@@ -89,8 +117,7 @@ export function BarcodeScannerDialog({ open, onOpenChange, onDetected }: Barcode
 
     return () => {
       cancelled = true;
-      controlsRef.current?.stop();
-      controlsRef.current = null;
+      cleanup();
     };
   }, [open, onDetected, onOpenChange]);
 
