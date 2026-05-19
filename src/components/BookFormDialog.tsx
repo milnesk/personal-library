@@ -7,12 +7,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
-import { X, Search, Loader2 } from 'lucide-react';
+import { X, Search, Loader2, ScanLine } from 'lucide-react';
 import { Book, Tag } from '@/types/book';
 import { useTags, useAddTag } from '@/hooks/useTags';
 import { useBooks } from '@/hooks/useBooks';
 import { lookupISBN } from '@/lib/openLibrary';
 import { toast } from 'sonner';
+import { BarcodeScannerDialog } from './BarcodeScannerDialog';
 
 interface BookFormDialogProps {
   open: boolean;
@@ -40,6 +41,7 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
   const [newTagName, setNewTagName] = useState('');
   const [isLooking, setIsLooking] = useState(false);
+  const [scannerOpen, setScannerOpen] = useState(false);
 
   useEffect(() => {
     if (book) {
@@ -61,8 +63,9 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
     }
   }, [book, open]);
 
-  const handleLookup = async () => {
-    const cleanISBN = isbn.replace(/[-\s]/g, '');
+  const handleLookup = async (overrideIsbn?: string) => {
+    const sourceIsbn = overrideIsbn ?? isbn;
+    const cleanISBN = sourceIsbn.replace(/[-\s]/g, '');
     if (!cleanISBN) { toast.error('Enter an ISBN first'); return; }
 
     setIsLooking(true);
@@ -79,6 +82,12 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
     } finally {
       setIsLooking(false);
     }
+  };
+
+  const handleScanDetected = (scannedIsbn: string) => {
+    setIsbn(scannedIsbn);
+    toast.success(`Scanned ${scannedIsbn}`);
+    handleLookup(scannedIsbn);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -150,15 +159,25 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
               <Button
                 type="button"
                 variant="secondary"
-                onClick={handleLookup}
+                onClick={() => setScannerOpen(true)}
+                className="gap-1.5 shrink-0"
+                aria-label="Scan barcode"
+              >
+                <ScanLine className="w-4 h-4" />
+                <span className="hidden sm:inline">Scan</span>
+              </Button>
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => handleLookup()}
                 disabled={isLooking || !isbn.trim()}
                 className="gap-1.5 shrink-0"
               >
                 {isLooking ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
-                Lookup
+                <span className="hidden sm:inline">Lookup</span>
               </Button>
             </div>
-            <p className="text-xs text-muted-foreground mt-1">Enter ISBN and click Lookup to auto-fill details</p>
+            <p className="text-xs text-muted-foreground mt-1">Scan the book's barcode or enter the ISBN to auto-fill details</p>
           </div>
 
           {/* Cover preview */}
@@ -249,6 +268,11 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
           </div>
         </form>
       </DialogContent>
+      <BarcodeScannerDialog
+        open={scannerOpen}
+        onOpenChange={setScannerOpen}
+        onDetected={handleScanDetected}
+      />
     </Dialog>
   );
 }
