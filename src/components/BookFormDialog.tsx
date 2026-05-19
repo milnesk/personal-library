@@ -41,6 +41,7 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
   const [newTagName, setNewTagName] = useState('');
   const [isLooking, setIsLooking] = useState(false);
+  const [scannerOpen, setScannerOpen] = useState(false);
 
   useEffect(() => {
     if (book) {
