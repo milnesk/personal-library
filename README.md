@@ -38,6 +38,7 @@ This is a single-admin app. One authenticated user (the library owner) can add, 
 - **Lovable Cloud** (database, auth & backend)
 - **TanStack Query** for data fetching
 - **Open Library API** for book metadata
+- **@zxing/browser** + **@zxing/library** for in-browser EAN-13 barcode scanning via the device camera
 
 ## Design
 
