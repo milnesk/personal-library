@@ -268,6 +268,11 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
           </div>
         </form>
       </DialogContent>
+      <BarcodeScannerDialog
+        open={scannerOpen}
+        onOpenChange={setScannerOpen}
+        onDetected={handleScanDetected}
+      />
     </Dialog>
   );
 }
