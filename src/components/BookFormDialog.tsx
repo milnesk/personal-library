@@ -63,8 +63,9 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
     }
   }, [book, open]);
 
-  const handleLookup = async () => {
-    const cleanISBN = isbn.replace(/[-\s]/g, '');
+  const handleLookup = async (overrideIsbn?: string) => {
+    const sourceIsbn = overrideIsbn ?? isbn;
+    const cleanISBN = sourceIsbn.replace(/[-\s]/g, '');
     if (!cleanISBN) { toast.error('Enter an ISBN first'); return; }
 
     setIsLooking(true);
@@ -81,6 +82,12 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
     } finally {
       setIsLooking(false);
     }
+  };
+
+  const handleScanDetected = (scannedIsbn: string) => {
+    setIsbn(scannedIsbn);
+    toast.success(`Scanned ${scannedIsbn}`);
+    handleLookup(scannedIsbn);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
