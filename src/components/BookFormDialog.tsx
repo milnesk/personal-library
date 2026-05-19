@@ -159,15 +159,25 @@ export function BookFormDialog({ open, onOpenChange, book, onSave, isSaving }: B
               <Button
                 type="button"
                 variant="secondary"
-                onClick={handleLookup}
+                onClick={() => setScannerOpen(true)}
+                className="gap-1.5 shrink-0"
+                aria-label="Scan barcode"
+              >
+                <ScanLine className="w-4 h-4" />
+                <span className="hidden sm:inline">Scan</span>
+              </Button>
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => handleLookup()}
                 disabled={isLooking || !isbn.trim()}
                 className="gap-1.5 shrink-0"
               >
                 {isLooking ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
-                Lookup
+                <span className="hidden sm:inline">Lookup</span>
               </Button>
             </div>
-            <p className="text-xs text-muted-foreground mt-1">Enter ISBN and click Lookup to auto-fill details</p>
+            <p className="text-xs text-muted-foreground mt-1">Scan the book's barcode or enter the ISBN to auto-fill details</p>
           </div>
 
           {/* Cover preview */}
