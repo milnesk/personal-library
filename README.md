@@ -7,6 +7,7 @@ A personal book tracking app with a Krakoa-inspired comic book aesthetic. Built 
 ## Features
 
 - **ISBN Lookup** — Enter an ISBN to auto-fill title, author, cover, and year from Open Library API
+- **Barcode Scanning** — Tap "Scan" on mobile to capture an ISBN with your phone's rear camera (EAN-13), then auto-run the Open Library lookup. Works in mobile Safari, Chrome, and Firefox on iOS/Android via the device camera.
 - **Book Summaries** — Automatically fetches descriptions from Open Library; toggle with Show/Hide Summary
 - **Duplicate Detection** — Prevents adding books with the same ISBN
 - **Three Reading Statuses** — Track books as Read, Currently Reading, or To Be Read
