@@ -7,12 +7,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
-import { X, Search, Loader2 } from 'lucide-react';
+import { X, Search, Loader2, ScanLine } from 'lucide-react';
 import { Book, Tag } from '@/types/book';
 import { useTags, useAddTag } from '@/hooks/useTags';
 import { useBooks } from '@/hooks/useBooks';
 import { lookupISBN } from '@/lib/openLibrary';
 import { toast } from 'sonner';
+import { BarcodeScannerDialog } from './BarcodeScannerDialog';
 
 interface BookFormDialogProps {
   open: boolean;
